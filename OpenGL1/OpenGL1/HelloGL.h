@@ -7,7 +7,7 @@
 
 #define REFRESHRATE 16
 
-
+    
 class HelloGL
 {
 public:
