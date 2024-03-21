@@ -13,9 +13,12 @@ HelloGL::HelloGL(int argc, char* argv[])
 	GLUTCallbacks::Init(this);
 
 	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(800, 800);
 	glutCreateWindow("Simple OpenGL Program");
 	glutDisplayFunc(GLUTCallbacks::Display);
+	glutKeyboardFunc(GLUTCallbacks::KeyboardDown);
+	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
 
 	glutTimerFunc(16, GLUTCallbacks::Timer, REFRESHRATE);
 
@@ -59,7 +62,7 @@ void HelloGL::Display()
 	DrawTriangle(0.4f, 0.2f, 0.85f, -0.1f, 0.85f, -0.85f, 0.4f, 0.4f, -1.8f, rotationSpeed2);
 
 	glFlush();
-
+	glutSwapBuffers();
 }
 
 void HelloGL::Update()
@@ -117,6 +120,17 @@ void HelloGL::DrawTriangle(float vertex1x, float vertex1y, float vertex2x, float
 	}
 
 	glPopMatrix();
+}
+
+void HelloGL::KeyboardDown(unsigned char key, int x, int y)
+{
+	if (key == 32)
+		isKeyDown = true;
+}
+
+void HelloGL::KeyboardUp(unsigned char key, int x, int y)
+{
+	isKeyDown = false;
 }
 
 //void HelloGL::DrawScalene()

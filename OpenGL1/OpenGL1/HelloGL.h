@@ -32,6 +32,9 @@ public:
 	void DrawPolygon();
 	void DrawTriangle(float vertex1x, float vertex1y, float vertex2x, float vertex2y, float vertex3x, float vertex3y, float rotX, float rotY, float rotZ, float rotSpeed);
 
+	void KeyboardDown(unsigned char key, int x, int y);
+	void KeyboardUp(unsigned char key, int x, int y);
+
 	//void DrawScalene();
 	//void DrawIsosceles();
 	//void DrawEquilateral();
