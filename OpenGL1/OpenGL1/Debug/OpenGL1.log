@@ -2,4 +2,5 @@
   HelloGL.cpp
   main.cpp
   Generating Code...
+  LINK : C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe not found or not built by the last incremental link; performing full link
   OpenGL1.vcxproj -> C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe

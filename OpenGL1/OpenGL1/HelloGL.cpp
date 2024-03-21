@@ -16,6 +16,7 @@ HelloGL::HelloGL(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(800, 800);
 	glutCreateWindow("Simple OpenGL Program");
+
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutKeyboardFunc(GLUTCallbacks::KeyboardDown);
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);

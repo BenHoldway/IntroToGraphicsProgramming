@@ -1,7 +1,0 @@
-﻿  GLUTCallbacks.cpp
-  HelloGL.cpp
-  main.cpp
-  Generating Code...
-GLUTCallbacks.obj : error LNK2019: unresolved external symbol __imp_glutTimerFunc referenced in function "void __cdecl GLUTCallbacks::Timer(int)" (?Timer@GLUTCallbacks@@YAXH@Z)
-freeglut.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
-F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL3D1\x64\Debug\OpenGL3D1.exe : fatal error LNK1120: 1 unresolved externals
