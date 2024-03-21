@@ -24,12 +24,12 @@ public:
 		float r;
 		float g;
 		float b;
-		colour(float _r, float _g, float _b)
-		{
-			r = _r;
-			g = _g;
-			b = _b;
-		}
+		//colour(float _r, float _g, float _b)
+		//{
+		//	r = _r;
+		//	g = _g;
+		//	b = _b;
+		//}
 	};
 
 	struct polygon
@@ -38,13 +38,13 @@ public:
 		int b;
 		int c;
 		int d;
-		polygon(int _a, int _b, int _c, int _d)
-		{
-			a = _a;
-			b = _b;
-			c = _c;
-			d = _d;
-		}
+		//polygon(int _a, int _b, int _c, int _d)
+		//{
+		//	a = _a;
+		//	b = _b;
+		//	c = _c;
+		//	d = _d;
+		//}
 	};
 
 	point3D* vertices;

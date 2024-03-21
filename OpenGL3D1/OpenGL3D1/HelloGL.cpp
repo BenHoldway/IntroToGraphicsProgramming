@@ -5,8 +5,8 @@
 HelloGL::HelloGL(int argc, char* argv[])
 {
 	vertices = new point3D();
-	colours = new colour(0.6f, 0.4f, 1.0f);
-	indices = new polygon(1, 1, 6, 4);
+	colours = new colour();
+	indices = new polygon();
 
 	GLUTCallbacks::Init(this);
 
