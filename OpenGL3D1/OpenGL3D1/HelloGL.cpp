@@ -4,7 +4,9 @@
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
-	vertices = new point3D(); 
+	int size = 6;
+
+	vertices = new point3D[size]; 
 	colours = new colour();
 	indices = new polygon();
 
