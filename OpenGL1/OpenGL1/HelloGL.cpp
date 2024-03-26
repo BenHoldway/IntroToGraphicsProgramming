@@ -10,6 +10,11 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 	isKeyDown = false;
 
+	camera = new Camera();
+	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
+	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
+	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
+
 	GLUTCallbacks::Init(this);
 
 	glutInit(&argc, argv);
@@ -20,8 +25,15 @@ HelloGL::HelloGL(int argc, char* argv[])
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutKeyboardFunc(GLUTCallbacks::KeyboardDown);
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
+	glutPassiveMotionFunc(GLUTCallbacks::MouseMove);
 
 	glutTimerFunc(16, GLUTCallbacks::Timer, REFRESHRATE);
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glViewport(0, 0, 800, 800);
+	gluPerspective(45, 1, 0, 1000);
+	glMatrixMode(GL_MODELVIEW);
 
 	glutMainLoop();
 }
@@ -29,38 +41,43 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 HelloGL::~HelloGL(void)
 {
-
+	delete camera;
 }
 
 void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT); //clears the scene
 
-	DrawPolygon();
+	#pragma region Drawing Flat Polygons
+	//DrawPolygon();
 
-	//Scalene Triangle
-	glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
-	DrawTriangle(-0.95f, -0.25f, -0.4f, 0.25f, 0.55f, -0.25f, 1.0f, 0.5f, -1.0f, rotationSpeed1);
+	////Scalene Triangle
+	//glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
+	//DrawTriangle(-0.95f, -0.25f, -0.4f, 0.25f, 0.55f, -0.25f, 1.0f, 0.5f, -1.0f, rotationSpeed1);
 
-	//Isosceles Triangle
-	glColor4f(0.0f, 1.0f, 0.0f, 0.0f);
-	DrawTriangle(0.0f, 0.2f, 0.25f, 0.9f, 0.5f, 0.2f, 1.0f, 0.4f, 0.0f, rotationSpeed2);
+	////Isosceles Triangle
+	//glColor4f(0.0f, 1.0f, 0.0f, 0.0f);
+	//DrawTriangle(0.0f, 0.2f, 0.25f, 0.9f, 0.5f, 0.2f, 1.0f, 0.4f, 0.0f, rotationSpeed2);
 
-	//Equilateral Triangle
-	glColor4f(0.0f, 0.0f, 1.0f, 0.0f);
-	DrawTriangle(-0.5f, -0.9f, 0.0f, -0.1f, 0.5f, -0.9f, -0.4f, 0.6f, 1.7f, rotationSpeed1);
+	////Equilateral Triangle
+	//glColor4f(0.0f, 0.0f, 1.0f, 0.0f);
+	//DrawTriangle(-0.5f, -0.9f, 0.0f, -0.1f, 0.5f, -0.9f, -0.4f, 0.6f, 1.7f, rotationSpeed1);
 
-	//Acute Triangle
-	glColor4f(1.0f, 0.0f, 1.0f, 0.0f);
-	DrawTriangle(-0.9f, 0.4f, -0.65f, 0.8f, -0.1f, 0.4f, -1.0f, 0.8f, -0.8f, rotationSpeed3);
+	////Acute Triangle
+	//glColor4f(1.0f, 0.0f, 1.0f, 0.0f);
+	//DrawTriangle(-0.9f, 0.4f, -0.65f, 0.8f, -0.1f, 0.4f, -1.0f, 0.8f, -0.8f, rotationSpeed3);
 
-	//Right Angle Triangle
-	glColor4f(0.4f, 0.6f, 1.0f, 0.4f);
-	DrawTriangle(0.3f, 0.5f, 0.3f, 0.8f, 0.95f, 0.5f, 0.2f, 0.8f, 0.2f, rotationSpeed3);
+	////Right Angle Triangle
+	//glColor4f(0.4f, 0.6f, 1.0f, 0.4f);
+	//DrawTriangle(0.3f, 0.5f, 0.3f, 0.8f, 0.95f, 0.5f, 0.2f, 0.8f, 0.2f, rotationSpeed3);
 
-	//Obtuse Triangle
-	glColor4f(0.8f, 0.5f, 1.0f, 0.0f);
-	DrawTriangle(0.4f, 0.2f, 0.85f, -0.1f, 0.85f, -0.85f, 0.4f, 0.4f, -1.8f, rotationSpeed2);
+	////Obtuse Triangle
+	//glColor4f(0.8f, 0.5f, 1.0f, 0.0f);
+	//DrawTriangle(0.4f, 0.2f, 0.85f, -0.1f, 0.85f, -0.85f, 0.4f, 0.4f, -1.8f, rotationSpeed2);
+#pragma endregion
+
+	glTranslatef(0.0f, 0.0f, -5.0f);
+	glutWireTeapot(0.5f);
 
 	glFlush();
 	glutSwapBuffers();
@@ -68,6 +85,13 @@ void HelloGL::Display()
 
 void HelloGL::Update()
 {
+	glLoadIdentity();
+	//gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
+
+	glRotatef(-yAngle, 0.0f, 0.1f, 0.0f);
+	glRotatef(-xAngle, 0.1f, 0.0f, 0.0f);
+	glTranslatef(-camera->eye.x, -camera->eye.y, -camera->eye.z);
+
 	glutPostRedisplay();
 
 	rotationSpeed1 = UpdateRotation(rotationSpeed1, 4.0f);
@@ -92,6 +116,7 @@ void HelloGL::DrawPolygon()
 {
 	glPushMatrix();
 	glRotatef(rotationSpeed2, 0.0f, 1.0f, 0.0f);
+	glTranslatef(0.0f, 0.0f, -5.0f);
 
 	glBegin(GL_POLYGON); //starts to draw a polygon
 	{
@@ -111,6 +136,7 @@ void HelloGL::DrawTriangle(float vertex1x, float vertex1y, float vertex2x, float
 {
 	glPushMatrix();
 	glRotatef(rotSpeed, rotX, rotY, rotZ);
+	glTranslatef(0.0f, 0.0f, -5.0f);
 
 	glBegin(GL_TRIANGLES); //starts to draw a polygon
 	{
@@ -125,13 +151,48 @@ void HelloGL::DrawTriangle(float vertex1x, float vertex1y, float vertex2x, float
 
 void HelloGL::KeyboardDown(unsigned char key, int x, int y)
 {
-	if (key == 32)
+	switch (key)
+	{
+	case 32:
 		isKeyDown = true;
+		break;
+	case 'd':
+		camera->eye.x += 0.01f; camera->center.x += 0.01f;
+		break;
+	case 'a':
+		camera->eye.x -= 0.01f; camera->center.x -= 0.01f;
+		break;
+	case 'w':
+		camera->eye.y += 0.01f; camera->center.y += 0.01f;
+		break;
+	case 's':
+		camera->eye.y -= 0.01f; camera->center.y -= 0.01f;
+		break;
+	}
 }
 
 void HelloGL::KeyboardUp(unsigned char key, int x, int y)
 {
 	isKeyDown = false;
+}
+
+void HelloGL::MouseMove(int _x, int _y)
+{
+	//camera->eye.x = _x / 100;
+	//camera->eye.y = _y / 100; 
+
+	if (_y > 90)
+		_y = 90;
+	else if (_x < -90)
+		_y = -90;
+
+	if (_x > 360)
+		_x = 360;
+	else if (_x < 0)
+		_x + 360;
+
+	xAngle = _x;
+	yAngle = _y;
 }
 
 //void HelloGL::DrawScalene()

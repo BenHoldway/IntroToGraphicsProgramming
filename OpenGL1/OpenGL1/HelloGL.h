@@ -18,6 +18,25 @@ public:
 
 	bool isKeyDown;
 
+	struct Vector3
+	{
+		float x;
+		float y;
+		float z;
+	};
+
+	struct Camera
+	{
+		Vector3 eye;
+		Vector3 center;
+		Vector3 up;
+	};
+
+	Camera* camera;
+
+	float yAngle;
+	float xAngle;
+
 	//constructor Definition
 	HelloGL(int argc, char* argv[]);
 
@@ -34,6 +53,7 @@ public:
 
 	void KeyboardDown(unsigned char key, int x, int y);
 	void KeyboardUp(unsigned char key, int x, int y);
+	void MouseMove(int _x, int _y);
 
 	//void DrawScalene();
 	//void DrawIsosceles();
