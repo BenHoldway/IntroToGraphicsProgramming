@@ -1,5 +1,2 @@
 ﻿  HelloGL.cpp
-C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(192,6): warning C4552: '+': result of expression not used
-C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(194,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(195,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   OpenGL1.vcxproj -> C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe

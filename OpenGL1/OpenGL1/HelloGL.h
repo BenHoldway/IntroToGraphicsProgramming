@@ -7,6 +7,15 @@
 
 #define REFRESHRATE 16
 
+struct Color
+{
+	GLfloat r, g, b;
+};
+
+struct Vertex
+{
+	GLfloat x, y, z;
+};
     
 class HelloGL
 {
@@ -33,6 +42,8 @@ public:
 	};
 
 	Camera* camera;
+	static Vertex vertices[];
+	static Color colours[];
 
 	float yAngle;
 	float xAngle;
@@ -50,6 +61,9 @@ public:
 
 	void DrawPolygon();
 	void DrawTriangle(float vertex1x, float vertex1y, float vertex2x, float vertex2y, float vertex3x, float vertex3y, float rotX, float rotY, float rotZ, float rotSpeed);
+
+	void DrawCube();
+	void DrawCubeArray();
 
 	void KeyboardDown(unsigned char key, int x, int y);
 	void KeyboardUp(unsigned char key, int x, int y);
