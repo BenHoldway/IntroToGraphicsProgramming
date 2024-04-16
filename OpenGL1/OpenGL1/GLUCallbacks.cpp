@@ -37,9 +37,4 @@ namespace GLUTCallbacks
 	{
 		helloGL->KeyboardUp(key, x, y);
 	}
-
-	void MouseMove(int x, int y)
-	{
-		helloGL->MouseMove(x, y);
-	}
 }
