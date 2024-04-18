@@ -1,14 +1,3 @@
-﻿  GLUCallbacks.cpp
-  HelloGL.cpp
-  main.cpp
-  Generating Code...
-GLUCallbacks.obj : error LNK2005: "int __cdecl random(int,int)" (?random@@YAHHH@Z) already defined in Cube.obj
-GLUCallbacks.obj : error LNK2005: "class std::random_device device" (?device@@3Vrandom_device@std@@A) already defined in Cube.obj
-GLUCallbacks.obj : error LNK2005: "class std::mersenne_twister_engine<unsigned int,32,624,397,31,2567483615,11,4294967295,7,2636928640,15,4022730752,18,1812433253> randomGenerator" (?randomGenerator@@3V?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@std@@A) already defined in Cube.obj
-HelloGL.obj : error LNK2005: "int __cdecl random(int,int)" (?random@@YAHHH@Z) already defined in Cube.obj
-HelloGL.obj : error LNK2005: "class std::random_device device" (?device@@3Vrandom_device@std@@A) already defined in Cube.obj
-HelloGL.obj : error LNK2005: "class std::mersenne_twister_engine<unsigned int,32,624,397,31,2567483615,11,4294967295,7,2636928640,15,4022730752,18,1812433253> randomGenerator" (?randomGenerator@@3V?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@std@@A) already defined in Cube.obj
-main.obj : error LNK2005: "int __cdecl random(int,int)" (?random@@YAHHH@Z) already defined in Cube.obj
-main.obj : error LNK2005: "class std::random_device device" (?device@@3Vrandom_device@std@@A) already defined in Cube.obj
-main.obj : error LNK2005: "class std::mersenne_twister_engine<unsigned int,32,624,397,31,2567483615,11,4294967295,7,2636928640,15,4022730752,18,1812433253> randomGenerator" (?randomGenerator@@3V?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@std@@A) already defined in Cube.obj
-C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe : fatal error LNK1169: one or more multiply defined symbols found
+﻿  Cube.cpp
+C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Cube.cpp(48,27): warning C4018: '<': signed/unsigned mismatch
+  OpenGL1.vcxproj -> C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe

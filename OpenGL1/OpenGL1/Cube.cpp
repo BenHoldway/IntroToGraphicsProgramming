@@ -1,21 +1,12 @@
 #include "Cube.h"
 
-Vertex Cube::indexedVertices[] = { 1, 1, 1, -1, 1, 1, // v0,v1,
-                                   -1,-1, 1, 1,-1, 1, // v2,v3
-                                   1,-1,-1, 1, 1,-1, // v4,v5
-                                   -1, 1,-1, -1,-1,-1 }; // v6,v7
+Vertex* Cube::indexedVertices = nullptr;
+Colour* Cube::indexedColours = nullptr;
+GLushort* Cube::indices = nullptr;
 
-Colour Cube::indexedColours[] = { 1, 1, 1, 1, 1, 0, // v0,v1,
-                                  1, 0, 0, 1, 0, 1, // v2,v3
-                                  0, 0, 1, 0, 1, 1, // v4,v5
-                                  0, 1, 0, 0, 0, 0 }; //v6,v7
-
-GLushort Cube::indices[] = { 0, 1, 2, 2, 3, 0, // front
-                             0, 3, 4, 4, 5, 0, // right
-                             0, 5, 6, 6, 1, 0, // top
-                             1, 6, 7, 7, 2, 1, // left
-                             7, 4, 3, 3, 2, 7, // bottom
-                             4, 7, 6, 6, 5, 4 }; // back
+int Cube::numVertices = 0;
+int Cube::numColours = 0;
+int Cube::numIndices = 0;
 
 Cube::Cube(GLfloat x, GLfloat y, GLfloat z)
 {
@@ -30,8 +21,102 @@ Cube::~Cube()
 {
 }
 
+bool Cube::Load(char* path)
+{
+    std::ifstream inFile;
+    inFile.open(path);
+
+    if (!inFile.good())
+    {
+        std::cerr << "Can't open text file " << path << std::endl;
+        return false;
+    }
+
+    std::string line;
+    std::getline(inFile, line);
+
+    numVertices = std::stoi(line);
+    indexedVertices = new Vertex[numVertices];
+
+    for (int i = 0; i < numVertices; i++)
+    {
+        std::string line;
+        std::string stringNum[3];
+        int num = 0;
+
+        std::getline(inFile, line);
+        for (int x = 0; x < line.length(); x++)
+        {
+            stringNum[num] += line[x];
+            if (line[x] == ' ')
+                num++;
+        }
+
+        indexedVertices[i].x = std::stof(stringNum[0]);
+        indexedVertices[i].y = std::stof(stringNum[1]);
+        indexedVertices[i].z = std::stof(stringNum[2]);
+    }
+
+
+
+
+    std::getline(inFile, line);
+
+    numColours = std::stoi(line);
+    indexedColours = new Colour[numColours];
+
+    for (int i = 0; i < numColours; i++)
+    {
+        std::string line;
+        std::string stringNum[3];
+        int num = 0;
+
+        std::getline(inFile, line);
+        for (int x = 0; x < line.length(); x++)
+        {
+            stringNum[num] += line[x];
+            if (line[x] == ' ')
+                num++;
+        }
+
+        indexedColours[i].r = std::stof(stringNum[0]);
+        indexedColours[i].g = std::stof(stringNum[1]);
+        indexedColours[i].b = std::stof(stringNum[2]);
+    }
+
+    std::getline(inFile, line);
+
+    numColours = std::stoi(line);
+    indexedColours = new Colour[numColours];
+
+    for (int i = 0; i < numColours; i++)
+    {
+        std::string line;
+        std::string stringNum[3];
+        int num = 0;
+
+        std::getline(inFile, line);
+        for (int x = 0; x < line.length(); x++)
+        {
+            stringNum[num] += line[x];
+            if (line[x] == ' ')
+                num++;
+        }
+
+        indexedColours[i].r = std::stof(stringNum[0]);
+        indexedColours[i].g = std::stof(stringNum[1]);
+        indexedColours[i].b = std::stof(stringNum[2]);
+    }
+
+    inFile.close();
+    return true;
+}
+
 void Cube::Draw()
 {
+    if (indexedVertices == nullptr || indexedColours == nullptr || indices == nullptr)
+        return;
+
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, indexedVertices);
@@ -51,7 +136,7 @@ void Cube::Draw()
 
 void Cube::Update()
 {
-    _rotation += random(-5, 5) / 10.0f;
+    _rotation += 0.3f;
     _position.z += 0.3f;
 
     if (_position.z > -5.0f)
