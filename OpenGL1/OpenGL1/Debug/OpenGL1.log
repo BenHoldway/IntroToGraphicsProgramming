@@ -1,3 +1,5 @@
 ﻿  Cube.cpp
-C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Cube.cpp(48,27): warning C4018: '<': signed/unsigned mismatch
-  OpenGL1.vcxproj -> C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Cube.cpp(49,27): warning C4018: '<': signed/unsigned mismatch
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Cube.cpp(74,27): warning C4018: '<': signed/unsigned mismatch
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Cube.cpp(99,27): warning C4018: '<': signed/unsigned mismatch
+  OpenGL1.vcxproj -> F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe

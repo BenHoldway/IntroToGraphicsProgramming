@@ -33,6 +33,8 @@ bool Cube::Load(char* path)
     }
 
     std::string line;
+
+    //Vertices
     std::getline(inFile, line);
 
     numVertices = std::stoi(line);
@@ -40,16 +42,16 @@ bool Cube::Load(char* path)
 
     for (int i = 0; i < numVertices; i++)
     {
-        std::string line;
-        std::string stringNum[3];
         int num = 0;
+        std::string stringNum[3];
 
         std::getline(inFile, line);
         for (int x = 0; x < line.length(); x++)
         {
-            stringNum[num] += line[x];
             if (line[x] == ' ')
                 num++;
+            else
+                stringNum[num] += line[x];
         }
 
         indexedVertices[i].x = std::stof(stringNum[0]);
@@ -58,8 +60,7 @@ bool Cube::Load(char* path)
     }
 
 
-
-
+    //Colours
     std::getline(inFile, line);
 
     numColours = std::stoi(line);
@@ -67,16 +68,15 @@ bool Cube::Load(char* path)
 
     for (int i = 0; i < numColours; i++)
     {
-        std::string line;
-        std::string stringNum[3];
         int num = 0;
-
+        std::string stringNum[3];
         std::getline(inFile, line);
         for (int x = 0; x < line.length(); x++)
         {
-            stringNum[num] += line[x];
             if (line[x] == ' ')
                 num++;
+            else
+                stringNum[num] += line[x];
         }
 
         indexedColours[i].r = std::stof(stringNum[0]);
@@ -84,28 +84,28 @@ bool Cube::Load(char* path)
         indexedColours[i].b = std::stof(stringNum[2]);
     }
 
+
+    //Indices
     std::getline(inFile, line);
 
-    numColours = std::stoi(line);
-    indexedColours = new Colour[numColours];
+    numIndices = std::stoi(line);
+    indices = new GLushort[numIndices];
 
-    for (int i = 0; i < numColours; i++)
+    int i = 0;
+    while (!inFile.eof())
     {
-        std::string line;
-        std::string stringNum[3];
         int num = 0;
-
         std::getline(inFile, line);
         for (int x = 0; x < line.length(); x++)
         {
-            stringNum[num] += line[x];
             if (line[x] == ' ')
-                num++;
+                continue;
+            else
+            {
+                indices[i] = (unsigned short)line[x];
+            }
+            i++;
         }
-
-        indexedColours[i].r = std::stof(stringNum[0]);
-        indexedColours[i].g = std::stof(stringNum[1]);
-        indexedColours[i].b = std::stof(stringNum[2]);
     }
 
     inFile.close();

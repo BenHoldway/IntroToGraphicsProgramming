@@ -23,7 +23,7 @@ public:
 
 	Camera* camera;
 
-	Cube* cube[200];
+	Cube* cube[500];
 
 
 
