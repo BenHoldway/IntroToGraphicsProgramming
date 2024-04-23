@@ -16,9 +16,9 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 	Cube::Load((char*)"cube.txt");
 
-	for (int i = 0; i < 500; i++)
+	for (int i = 0; i < 200; i++)
 	{
-		cube[i] = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+		cube[i] = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, 45.0f);
 	}
 
 	GLUTCallbacks::Init(this);
@@ -37,7 +37,7 @@ HelloGL::HelloGL(int argc, char* argv[])
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, 800, 800);
-	gluPerspective(45, 1, 10, 1000);
+	gluPerspective(45, 1, 1, 1000);
 	glMatrixMode(GL_MODELVIEW);
 
 	glEnable(GL_DEPTH_TEST);

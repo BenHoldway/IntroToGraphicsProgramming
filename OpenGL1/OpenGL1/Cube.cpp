@@ -8,13 +8,16 @@ int Cube::numVertices = 0;
 int Cube::numColours = 0;
 int Cube::numIndices = 0;
 
-Cube::Cube(GLfloat x, GLfloat y, GLfloat z)
+Cube::Cube(GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed)
 {
     _position.x = x;
     _position.y = y;
     _position.z = z;
 
-    _rotation = 0.0f;
+    rotX = _rotX;
+    rotY = _rotY;
+    rotZ = _rotZ;
+    rotationSpeed = _rotationSpeed;
 }
 
 Cube::~Cube()
@@ -32,80 +35,29 @@ bool Cube::Load(char* path)
         return false;
     }
 
-    std::string line;
-
-    //Vertices
-    std::getline(inFile, line);
-
-    numVertices = std::stoi(line);
+    inFile >> numVertices;
     indexedVertices = new Vertex[numVertices];
-
     for (int i = 0; i < numVertices; i++)
     {
-        int num = 0;
-        std::string stringNum[3];
-
-        std::getline(inFile, line);
-        for (int x = 0; x < line.length(); x++)
-        {
-            if (line[x] == ' ')
-                num++;
-            else
-                stringNum[num] += line[x];
-        }
-
-        indexedVertices[i].x = std::stof(stringNum[0]);
-        indexedVertices[i].y = std::stof(stringNum[1]);
-        indexedVertices[i].z = std::stof(stringNum[2]);
+        inFile >> indexedVertices[i].x;
+        inFile >> indexedVertices[i].y;
+        inFile >> indexedVertices[i].z;
     }
-
-
-    //Colours
-    std::getline(inFile, line);
-
-    numColours = std::stoi(line);
+    
+    inFile >> numColours;
     indexedColours = new Colour[numColours];
-
     for (int i = 0; i < numColours; i++)
     {
-        int num = 0;
-        std::string stringNum[3];
-        std::getline(inFile, line);
-        for (int x = 0; x < line.length(); x++)
-        {
-            if (line[x] == ' ')
-                num++;
-            else
-                stringNum[num] += line[x];
-        }
-
-        indexedColours[i].r = std::stof(stringNum[0]);
-        indexedColours[i].g = std::stof(stringNum[1]);
-        indexedColours[i].b = std::stof(stringNum[2]);
+        inFile >> indexedColours[i].r;
+        inFile >> indexedColours[i].g;
+        inFile >> indexedColours[i].b;
     }
-
-
-    //Indices
-    std::getline(inFile, line);
-
-    numIndices = std::stoi(line);
+    
+    inFile >> numIndices;
     indices = new GLushort[numIndices];
-
-    int i = 0;
-    while (!inFile.eof())
+    for (int i = 0; i < numIndices; i++)
     {
-        int num = 0;
-        std::getline(inFile, line);
-        for (int x = 0; x < line.length(); x++)
-        {
-            if (line[x] == ' ')
-                continue;
-            else
-            {
-                indices[i] = (unsigned short)line[x];
-            }
-            i++;
-        }
+        inFile >> indices[i];
     }
 
     inFile.close();
@@ -125,7 +77,7 @@ void Cube::Draw()
     glPushMatrix();
     
     glTranslatef(_position.x, _position.y, _position.z);
-    glRotatef(_rotation, 1.0f, 0.0f, 0.0f);
+    glRotatef(rotationSpeed, rotX, rotY, rotZ);
     
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, indices);
     glPopMatrix();
@@ -136,8 +88,10 @@ void Cube::Draw()
 
 void Cube::Update()
 {
-    _rotation += 0.3f;
     _position.z += 0.3f;
+    rotX += rotationSpeed;
+    rotY += rotationSpeed;
+    rotZ += rotationSpeed;
 
     if (_position.z > -5.0f)
     {

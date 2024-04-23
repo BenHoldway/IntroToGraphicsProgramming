@@ -33,8 +33,12 @@ public:
 	//Destructor
 	~HelloGL(void);
 
+	//void InitGL(int argc, char* argv[]);
+	//void InitObjects();
+
 	void Display();
 	void Update();
+
 
 	float UpdateRotation(float _rotationSpeed, float increaseAmount);
 
