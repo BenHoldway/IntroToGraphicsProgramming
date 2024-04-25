@@ -23,7 +23,8 @@ public:
 
 	Camera* camera;
 
-	Cube* cube[500];
+	//Cube* cube[500];
+	Cube* teapot;
 
 
 
@@ -33,8 +34,8 @@ public:
 	//Destructor
 	~HelloGL(void);
 
-	//void InitGL(int argc, char* argv[]);
-	//void InitObjects();
+	void InitGL(int argc, char* argv[]);
+	void InitObjects();
 
 	void Display();
 	void Update();

@@ -31,6 +31,7 @@ public:
 	~Cube();
 
 	static bool Load(char* path);
+	static bool LoadObj(char* path);
 
 	void Draw();
 

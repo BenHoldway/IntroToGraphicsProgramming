@@ -1,4 +1,5 @@
 #include "Cube.h"
+#include <sstream>
 
 Vertex* Cube::indexedVertices = nullptr;
 Colour* Cube::indexedColours = nullptr;
@@ -58,6 +59,82 @@ bool Cube::Load(char* path)
     for (int i = 0; i < numIndices; i++)
     {
         inFile >> indices[i];
+    }
+
+    inFile.close();
+    return true;
+}
+
+bool Cube::LoadObj(char* path)
+{
+    std::ifstream inFile;
+    inFile.open(path);
+
+    if (!inFile.good())
+    {
+        std::cerr << "Can't open text file " << path << std::endl;
+        return false;
+    }
+
+    std::string str;
+    int i = 0;
+
+    while (!inFile.eof())
+    {
+        inFile >> str;
+
+        if (str == "v")
+        {
+            numVertices++;
+        }
+        else if (str == "f")
+        {
+            numIndices++;
+        }
+    }
+
+    indexedVertices = new Vertex[numVertices];
+    indices = new GLushort[numIndices];
+
+    inFile.clear();
+    inFile.seekg(0, inFile.beg);
+
+    while (!inFile.eof())
+    {
+        std::getline(inFile, str);
+
+        std::istringstream stream(str);
+        std::string token;
+
+        std::string stringArr[4];
+        int strIndex = 0;
+        int verticesIndex = 0;
+        int indicesIndex = 0;
+
+        while (std::getline(stream, token, ' '))
+        {
+            stringArr[strIndex] = token;
+            strIndex++;
+
+            if (strIndex == 4)
+            {
+                if (stringArr[0] == "v")
+                {
+                    indexedVertices[verticesIndex].x = std::stoul(stringArr[1]);
+                    indexedVertices[verticesIndex].y = std::stoul(stringArr[2]);
+                    indexedVertices[verticesIndex].z = std::stoul(stringArr[3]);
+                    verticesIndex++;
+                }
+                else if (stringArr[0] == "f")
+                {
+                    for (int x = 0; x < 3; x++)
+                    {
+                        indices[indicesIndex] = std::stoi(stringArr[x + 1]);
+                        indicesIndex++;
+                    }
+                }
+            }
+        }
     }
 
     inFile.close();

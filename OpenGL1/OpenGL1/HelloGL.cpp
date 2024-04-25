@@ -15,11 +15,14 @@ HelloGL::HelloGL(int argc, char* argv[])
 	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
 
 	Cube::Load((char*)"cube.txt");
+	Cube::LoadObj((char*)"teapot.obj");
 
-	for (int i = 0; i < 200; i++)
-	{
-		cube[i] = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, 45.0f);
-	}
+	//for (int i = 0; i < 200; i++)
+	//{
+	//	cube[i] = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, 45.0f);
+	//}
+
+	teapot = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, 45.0f);
 
 	GLUTCallbacks::Init(this);
 
@@ -91,8 +94,10 @@ void HelloGL::Display()
 
 
 	//DrawCubeArray();
-	for(int i = 0; i < 200; i++)
-		cube[i]->Draw();
+	//for(int i = 0; i < 200; i++)
+	//	cube[i]->Draw();
+
+	teapot->Draw();
 
 	glFlush();
 	glutSwapBuffers();
@@ -103,8 +108,10 @@ void HelloGL::Update()
 	glLoadIdentity();
 	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
 
-	for (int i = 0; i < 200; i++)
-		cube[i]->Update();
+	//for (int i = 0; i < 200; i++)
+	//	cube[i]->Update();
+
+	teapot->Update();
 
 	glutPostRedisplay();
 
