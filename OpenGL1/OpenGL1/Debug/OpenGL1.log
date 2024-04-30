@@ -1,5 +1,4 @@
 ﻿  Cube.cpp
-C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Cube.cpp(123,66): warning C4244: '=': conversion from 'unsigned long' to 'GLfloat', possible loss of data
-C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Cube.cpp(124,66): warning C4244: '=': conversion from 'unsigned long' to 'GLfloat', possible loss of data
-C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Cube.cpp(125,66): warning C4244: '=': conversion from 'unsigned long' to 'GLfloat', possible loss of data
+  SceneObject.cpp
+  Generating Code...
   OpenGL1.vcxproj -> C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe

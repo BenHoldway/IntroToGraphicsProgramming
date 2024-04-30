@@ -9,23 +9,16 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 	isKeyDown = false;
 
-	camera = new Camera();
-	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
-	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
-	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
-
-	Cube::Load((char*)"cube.txt");
-	Cube::LoadObj((char*)"teapot.obj");
-
-	//for (int i = 0; i < 200; i++)
-	//{
-	//	cube[i] = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, 45.0f);
-	//}
-
-	teapot = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, 45.0f);
-
 	GLUTCallbacks::Init(this);
 
+	InitGL(argc, argv);
+	InitObjects();
+
+	glutMainLoop();
+}
+
+void HelloGL::InitGL(int argc, char* argv[])
+{
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowSize(800, 800);
@@ -36,7 +29,7 @@ HelloGL::HelloGL(int argc, char* argv[])
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
 
 	glutTimerFunc(16, GLUTCallbacks::Timer, REFRESHRATE);
-	
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, 800, 800);
@@ -46,16 +39,39 @@ HelloGL::HelloGL(int argc, char* argv[])
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-
-	glutMainLoop();
 }
 
+void HelloGL::InitObjects()
+{
+	camera = new Camera();
+	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
+	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
+	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
+
+	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt");
+	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
+
+	for (int i = 0; i < NUMOBJECTS; i++)
+	{
+		if(i < NUMOBJECTS / 2)
+			objects[i] = new Cube(cubeMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 20.0f) - 15.0f, ((rand() % 400) / 50.0f) - 5.0f);
+		else
+			objects[i] = new Cube(pyramidMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 20.0f) - 15.0f, ((rand() % 400) / 50.0f) - 5.0f);
+	}
+
+
+
+	//Cube::LoadObj((char*)"teapot.obj");
+	//teapot = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, 45.0f);
+}
 
 HelloGL::~HelloGL(void)
 {
 	delete camera;
 	//delete cube;
 }
+
+
 
 void HelloGL::Display()
 {
@@ -94,10 +110,11 @@ void HelloGL::Display()
 
 
 	//DrawCubeArray();
-	//for(int i = 0; i < 200; i++)
-	//	cube[i]->Draw();
+	
+	for(int i = 0; i < NUMOBJECTS; i++)
+		objects[i]->Draw();
 
-	teapot->Draw();
+	//teapot->Draw();
 
 	glFlush();
 	glutSwapBuffers();
@@ -108,10 +125,10 @@ void HelloGL::Update()
 	glLoadIdentity();
 	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
 
-	//for (int i = 0; i < 200; i++)
-	//	cube[i]->Update();
+	for (int i = 0; i < NUMOBJECTS; i++)
+		objects[i]->Update();
 
-	teapot->Update();
+	//teapot->Update();
 
 	glutPostRedisplay();
 
@@ -132,6 +149,39 @@ float HelloGL::UpdateRotation(float _rotationSpeed, float increaseAmount)
 
 	return _rotationSpeed;
 }
+
+
+
+
+void HelloGL::KeyboardDown(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+	case 32:
+		isKeyDown = true;
+		break;
+	case 'd':
+		camera->eye.x += 0.01f; camera->center.x += 0.01f;
+		break;
+	case 'a':
+		camera->eye.x -= 0.01f; camera->center.x -= 0.01f;
+		break;
+	case 'w':
+		camera->eye.y += 0.01f; camera->center.y += 0.01f;
+		break;
+	case 's':
+		camera->eye.y -= 0.01f; camera->center.y -= 0.01f;
+		break;
+	}
+}
+
+void HelloGL::KeyboardUp(unsigned char key, int x, int y)
+{
+	isKeyDown = false;
+}
+
+
+
 
 void HelloGL::DrawPolygon()
 {
@@ -303,32 +353,6 @@ void HelloGL::DrawTriangle(float vertex1x, float vertex1y, float vertex2x, float
 //}
 
 
-void HelloGL::KeyboardDown(unsigned char key, int x, int y)
-{
-	switch (key)
-	{
-	case 32:
-		isKeyDown = true;
-		break;
-	case 'd':
-		camera->eye.x += 0.01f; camera->center.x += 0.01f;
-		break;
-	case 'a':
-		camera->eye.x -= 0.01f; camera->center.x -= 0.01f;
-		break;
-	case 'w':
-		camera->eye.y += 0.01f; camera->center.y += 0.01f;
-		break;
-	case 's':
-		camera->eye.y -= 0.01f; camera->center.y -= 0.01f;
-		break;
-	}
-}
-
-void HelloGL::KeyboardUp(unsigned char key, int x, int y)
-{
-	isKeyDown = false;
-}
 
 //void HelloGL::DrawScalene()
 //{

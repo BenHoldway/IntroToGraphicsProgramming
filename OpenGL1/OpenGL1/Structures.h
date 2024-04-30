@@ -1,4 +1,6 @@
 #pragma once
+#include <Windows.h>
+#include <gl/GL.h>
 
 struct Vector3
 {

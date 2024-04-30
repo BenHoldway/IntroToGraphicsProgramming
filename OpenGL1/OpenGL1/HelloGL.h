@@ -1,14 +1,15 @@
 #pragma once
 
-#define NOMINMAX
 #include <Windows.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "GL\freeglut.h"
 #include "Structures.h"
 #include "Cube.h"
+#include "MeshLoader.h"
 
 #define REFRESHRATE 16
+#define NUMOBJECTS 200
 
     
 class HelloGL
@@ -23,8 +24,8 @@ public:
 
 	Camera* camera;
 
-	//Cube* cube[500];
-	Cube* teapot;
+	SceneObject* objects[NUMOBJECTS];
+	//Cube* teapot;
 
 
 
