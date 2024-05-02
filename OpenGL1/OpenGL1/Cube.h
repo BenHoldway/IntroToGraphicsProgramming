@@ -9,6 +9,7 @@
 #include <gl/GLU.h>
 #include "GL\freeglut.h"
 #include "SceneObject.h"
+#include "Texture2D.h"
 
 class Cube : public SceneObject
 {
@@ -27,8 +28,11 @@ private:
 	float increaseAmount;
 
 public:
-	Cube(Mesh* _mesh, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount);
+	Cube(Mesh* _mesh, Texture2D* _texture, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount);
 	~Cube();
+
+	virtual void Draw();
+	virtual void Update();
 
 	//static bool Load(char* path);
 	//static bool LoadObj(char* path);

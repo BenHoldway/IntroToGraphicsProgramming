@@ -36,6 +36,7 @@ void HelloGL::InitGL(int argc, char* argv[])
 	gluPerspective(45, 1, 1, 1000);
 	glMatrixMode(GL_MODELVIEW);
 
+	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -51,18 +52,21 @@ void HelloGL::InitObjects()
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt");
 	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
 
-	for (int i = 0; i < NUMOBJECTS; i++)
+	Texture2D* texture = new Texture2D();
+	texture->Load((char*)"penguins.raw", 512, 512);
+
+
+	for (int i = 0; i < NUMOBJECTS / 2; i++)
 	{
-		if(i < NUMOBJECTS / 2)
-			objects[i] = new Cube(cubeMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 20.0f) - 15.0f, ((rand() % 400) / 50.0f) - 5.0f);
-		else
-			objects[i] = new Cube(pyramidMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 20.0f) - 15.0f, ((rand() % 400) / 50.0f) - 5.0f);
+		objects[i] = new Cube(cubeMesh, texture, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 20.0f) - 15.0f, ((rand() % 400) / 50.0f) - 5.0f);
+	}
+
+	for (int i = NUMOBJECTS / 2; i < NUMOBJECTS; i++)
+	{
+		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 20.0f) - 15.0f, ((rand() % 400) / 50.0f) - 5.0f);
 	}
 
 
-
-	//Cube::LoadObj((char*)"teapot.obj");
-	//teapot = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, 45.0f);
 }
 
 HelloGL::~HelloGL(void)
@@ -105,16 +109,10 @@ void HelloGL::Display()
 	//DrawTriangle(0.4f, 0.2f, 0.85f, -0.1f, 0.85f, -0.85f, 0.4f, 0.4f, -1.8f, rotationSpeed2);
 #pragma endregion
 
-	//glTranslatef(0.0f, 0.0f, -5.0f);
-	//glutWireTeapot(0.5f);
-
-
 	//DrawCubeArray();
 	
 	for(int i = 0; i < NUMOBJECTS; i++)
 		objects[i]->Draw();
-
-	//teapot->Draw();
 
 	glFlush();
 	glutSwapBuffers();
@@ -127,8 +125,6 @@ void HelloGL::Update()
 
 	for (int i = 0; i < NUMOBJECTS; i++)
 		objects[i]->Update();
-
-	//teapot->Update();
 
 	glutPostRedisplay();
 

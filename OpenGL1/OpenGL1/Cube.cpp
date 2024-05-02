@@ -1,15 +1,7 @@
 #include "Cube.h"
 #include <sstream>
 
-//Vertex* Cube::indexedVertices = nullptr;
-//Colour* Cube::indexedColours = nullptr;
-//GLushort* Cube::indices = nullptr;
-//
-//int Cube::numVertices = 0;
-//int Cube::numColours = 0;
-//int Cube::numIndices = 0;
-
-Cube::Cube(Mesh* _mesh, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount) : SceneObject(mesh)
+Cube::Cube(Mesh* _mesh, Texture2D* _texture, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount) : SceneObject(_mesh, _texture)
 {
     _position.x = x;
     _position.y = y;
@@ -21,10 +13,55 @@ Cube::Cube(Mesh* _mesh, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rot
     rotationSpeed = _rotationSpeed;
     
     increaseAmount = _increaseAmount;
+
 }
 
 Cube::~Cube()
 {
+}
+
+void Cube::Draw()
+{
+    if (mesh->vertices == nullptr || mesh->colours == nullptr || mesh->indices == nullptr)
+        return;
+
+
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+
+    glBindTexture(GL_TEXTURE_2D, texture->GetID());
+    glVertexPointer(3, GL_FLOAT, 0, mesh->vertices);
+    glColorPointer(3, GL_FLOAT, 0, mesh->colours);
+
+    glTexCoordPointer(2, GL_FLOAT, 0, mesh->texCoords);
+
+    glPushMatrix();
+
+        glTranslatef(_position.x, _position.y, _position.z);
+        glRotatef(rotationSpeed, rotX, rotY, rotZ);
+
+        glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_SHORT, mesh->indices);
+
+    glPopMatrix();
+
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+}
+
+void Cube::Update()
+{
+    _position.z += 0.2f;
+    rotationSpeed += increaseAmount;
+
+    if (rotationSpeed >= 360.0f)
+        rotationSpeed = 0.0f;
+
+    if (_position.z > -5.0f)
+    {
+        _position.z = -75.0f;
+    }
 }
 
 //Using vertices etc...

@@ -9,6 +9,7 @@ namespace MeshLoader
 {
 	void LoadVertices(ifstream& inFile, Mesh& mesh);
 	void LoadColours(ifstream& inFile, Mesh& mesh);
+	void LoadTexCoords(ifstream& inFile, Mesh& mesh);
 	void LoadIndices(ifstream& inFile, Mesh& mesh);
 
 	void LoadVertices(ifstream& inFile, Mesh& mesh)
@@ -30,33 +31,32 @@ namespace MeshLoader
 
 	void LoadColours(ifstream& inFile, Mesh& mesh)
 	{
-		inFile >> mesh.colourCount;
-
-		if (mesh.colourCount > 0)
+		for (int i = 0; i < mesh.colourCount; i++)
 		{
-			mesh.colours = new Colour[mesh.colourCount];
+			inFile >> mesh.colours[i].r;
+			inFile >> mesh.colours[i].g;
+			inFile >> mesh.colours[i].b;
+		}
+	}
 
-			for (int i = 0; i < mesh.colourCount; i++)
-			{
-				inFile >> mesh.colours[i].r;
-				inFile >> mesh.colours[i].g;
-				inFile >> mesh.colours[i].b;
-			}
+	void LoadTexCoords(ifstream& inFile, Mesh& mesh)
+	{
+		mesh.texCoords = new TexCoord[mesh.texCoordsCount];
+
+		for (int i = 0; i < mesh.texCoordsCount; i++)
+		{
+			inFile >> mesh.texCoords[i].u;
+			inFile >> mesh.texCoords[i].v;
 		}
 	}
 
 	void LoadIndices(ifstream& inFile, Mesh& mesh)
 	{
-		inFile >> mesh.indexCount;
+		mesh.indices = new GLushort[mesh.indexCount];
 
-		if (mesh.indexCount > 0)
+		for (int i = 0; i < mesh.indexCount; i++)
 		{
-			mesh.indices = new GLushort[mesh.indexCount];
-
-			for (int i = 0; i < mesh.indexCount; i++)
-			{
-				inFile >> mesh.indices[i];
-			}
+			inFile >> mesh.indices[i];
 		}
 	}
 
@@ -79,6 +79,8 @@ namespace MeshLoader
 		LoadIndices(inFile, *mesh);
 
 		inFile.close();
+
 		return mesh;
 	}
+	
 }

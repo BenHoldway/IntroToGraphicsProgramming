@@ -6,6 +6,7 @@
 #include "GL\freeglut.h"
 #include "Structures.h"
 #include "Cube.h"
+#include "Pyramid.h"
 #include "MeshLoader.h"
 
 #define REFRESHRATE 16
