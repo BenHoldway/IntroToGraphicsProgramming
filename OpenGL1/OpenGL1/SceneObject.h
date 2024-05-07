@@ -7,6 +7,7 @@ class SceneObject
 protected:
 	Mesh* mesh;
 	Texture2D* texture;
+	Material* material;
 
 public:
 	SceneObject(Mesh* _mesh, Texture2D* _texture);

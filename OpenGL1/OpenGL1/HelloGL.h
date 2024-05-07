@@ -15,6 +15,9 @@
     
 class HelloGL
 {
+private:
+	Vector4* lightPos;
+	Lighting* lightData;
 public:
 
 	//float rotationSpeed1;
@@ -38,6 +41,7 @@ public:
 
 	void InitGL(int argc, char* argv[]);
 	void InitObjects();
+	void InitLighting();
 
 	void Display();
 	void Update();

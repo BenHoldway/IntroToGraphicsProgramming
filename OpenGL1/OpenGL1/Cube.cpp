@@ -13,7 +13,6 @@ Cube::Cube(Mesh* _mesh, Texture2D* _texture, GLfloat x, GLfloat y, GLfloat z, fl
     rotationSpeed = _rotationSpeed;
     
     increaseAmount = _increaseAmount;
-
 }
 
 Cube::~Cube()
@@ -22,19 +21,27 @@ Cube::~Cube()
 
 void Cube::Draw()
 {
-    if (mesh->vertices == nullptr || mesh->colours == nullptr || mesh->indices == nullptr)
+    if (mesh->vertices == nullptr || mesh->normals == nullptr || mesh->indices == nullptr)
         return;
 
 
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-
     glBindTexture(GL_TEXTURE_2D, texture->GetID());
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    //glEnableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+
+    glNormalPointer(GL_FLOAT, 0, mesh->normals);
     glVertexPointer(3, GL_FLOAT, 0, mesh->vertices);
-    glColorPointer(3, GL_FLOAT, 0, mesh->colours);
+    //glColorPointer(3, GL_FLOAT, 0, mesh->colour);
 
     glTexCoordPointer(2, GL_FLOAT, 0, mesh->texCoords);
+
+    material = new Material();
+    material->ambient.x = 0.8f; material->ambient.y = 0.05f; material->ambient.z = 0.05f; material->ambient.w = 1.0f;
+    material->diffuse.x = 0.8f; material->diffuse.y = 0.05f; material->diffuse.z = 0.05f; material->diffuse.w = 1.0f;
+    material->specular.x = 0.8f; material->specular.y = 0.05f; material->specular.z = 1.0f; material->specular.w = 1.0f;
 
     glPushMatrix();
 
@@ -45,9 +52,10 @@ void Cube::Draw()
 
     glPopMatrix();
 
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_COLOR_ARRAY);
+    //glDisableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
 void Cube::Update()

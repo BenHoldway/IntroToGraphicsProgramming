@@ -34,9 +34,31 @@ struct TexCoord
 struct Mesh
 {
 	Vertex* vertices;
-	Colour* colours;
+	//Colour* colours;
+	Vector3* normals;
 	GLushort* indices;
-	int vertexCount, colourCount, indexCount, texCoordsCount;
+	int vertexCount, /*colourCount*/ normalCount, indexCount, texCoordsCount;
 
 	TexCoord* texCoords;
+};
+
+struct Vector4
+{
+	float x, y, z, w;
+};
+
+struct Lighting
+{
+	Vector4 ambient;
+	Vector4 diffuse;
+	Vector4 specular;
+};
+
+struct Material
+{
+	Vector4 ambient;
+	Vector4 diffuse;
+	Vector4 specular;
+
+	GLfloat shininess;
 };

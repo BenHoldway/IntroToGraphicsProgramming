@@ -8,8 +8,9 @@ using namespace std;
 namespace MeshLoader
 {
 	void LoadVertices(ifstream& inFile, Mesh& mesh);
-	void LoadColours(ifstream& inFile, Mesh& mesh);
+	//void LoadColours(ifstream& inFile, Mesh& mesh);
 	void LoadTexCoords(ifstream& inFile, Mesh& mesh);
+	void LoadNormals(ifstream& inFile, Mesh& mesh);
 	void LoadIndices(ifstream& inFile, Mesh& mesh);
 
 	void LoadVertices(ifstream& inFile, Mesh& mesh)
@@ -29,29 +30,59 @@ namespace MeshLoader
 		}
 	}
 
-	void LoadColours(ifstream& inFile, Mesh& mesh)
+	//void LoadColours(ifstream& inFile, Mesh& mesh)
+	//{
+	//	inFile >> mesh.colourCount;
+
+	//	if (mesh.colourCount > 0)
+	//	{
+	//		mesh.colours = new Colour[mesh.colourCount];
+
+	//		for (int i = 0; i < mesh.colourCount; i++)
+	//		{
+	//			inFile >> mesh.colours[i].r;
+	//			inFile >> mesh.colours[i].g;
+	//			inFile >> mesh.colours[i].b;
+	//		}
+	//	}
+	//}	
+	
+	void LoadTexCoords(ifstream& inFile, Mesh& mesh)
 	{
-		for (int i = 0; i < mesh.colourCount; i++)
+		inFile >> mesh.texCoordsCount;
+
+		if (mesh.texCoordsCount > 0)
 		{
-			inFile >> mesh.colours[i].r;
-			inFile >> mesh.colours[i].g;
-			inFile >> mesh.colours[i].b;
+			mesh.texCoords = new TexCoord[mesh.texCoordsCount];
+
+			for (int i = 0; i < mesh.texCoordsCount; i++)
+			{
+				inFile >> mesh.texCoords[i].u;
+				inFile >> mesh.texCoords[i].v;
+			}
 		}
 	}
 
-	void LoadTexCoords(ifstream& inFile, Mesh& mesh)
+	void LoadNormals(ifstream& inFile, Mesh& mesh)
 	{
-		mesh.texCoords = new TexCoord[mesh.texCoordsCount];
+		inFile >> mesh.normalCount;
 
-		for (int i = 0; i < mesh.texCoordsCount; i++)
+		if (mesh.normalCount > 0)
 		{
-			inFile >> mesh.texCoords[i].u;
-			inFile >> mesh.texCoords[i].v;
+			mesh.normals = new Vector3[mesh.normalCount];
+
+			for (int i = 0; i < mesh.normalCount; i++)
+			{
+				inFile >> mesh.normals[i].x;
+				inFile >> mesh.normals[i].y;
+				inFile >> mesh.normals[i].z;
+			}
 		}
 	}
 
 	void LoadIndices(ifstream& inFile, Mesh& mesh)
 	{
+		inFile >> mesh.indexCount;
 		mesh.indices = new GLushort[mesh.indexCount];
 
 		for (int i = 0; i < mesh.indexCount; i++)
@@ -75,7 +106,9 @@ namespace MeshLoader
 		}
 
 		LoadVertices(inFile, *mesh);
-		LoadColours(inFile, *mesh);
+		//LoadColours(inFile, *mesh);
+		LoadTexCoords(inFile, *mesh);
+		LoadNormals(inFile, *mesh);
 		LoadIndices(inFile, *mesh);
 
 		inFile.close();

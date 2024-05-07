@@ -13,6 +13,7 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 	InitGL(argc, argv);
 	InitObjects();
+	InitLighting();
 
 	glutMainLoop();
 }
@@ -28,7 +29,7 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glutKeyboardFunc(GLUTCallbacks::KeyboardDown);
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
 
-	glutTimerFunc(16, GLUTCallbacks::Timer, REFRESHRATE);
+	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -37,8 +38,12 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glMatrixMode(GL_MODELVIEW);
 
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
 	glCullFace(GL_BACK);
 }
 
@@ -50,23 +55,65 @@ void HelloGL::InitObjects()
 	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt");
-	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
+	//Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
 
 	Texture2D* texture = new Texture2D();
-	texture->Load((char*)"penguins.raw", 512, 512);
+	texture->Load((char*)"Penguins.raw", 512, 512);
 
 
-	for (int i = 0; i < NUMOBJECTS / 2; i++)
+	for (int i = 0; i < NUMOBJECTS; i++)
 	{
-		objects[i] = new Cube(cubeMesh, texture, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 20.0f) - 15.0f, ((rand() % 400) / 50.0f) - 5.0f);
+		objects[i] = new Cube(cubeMesh, texture, 
+			((rand() % 400) / 10.0f) - 20.0f, 
+			((rand() % 200) / 10.0f) - 10.0f, 
+			-(rand() % 1000) / 10.0f, 
+			((rand() % 400) / 10.0f) - 20.0f, 
+			((rand() % 400) / 10.0f) - 20.0f, 
+			((rand() % 400) / 10.0f) - 20.0f, 
+			((rand() % 400) / 20.0f) - 15.0f, 
+			((rand() % 400) / 50.0f) - 5.0f);
 	}
 
-	for (int i = NUMOBJECTS / 2; i < NUMOBJECTS; i++)
-	{
-		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 400) / 20.0f) - 15.0f, ((rand() % 400) / 50.0f) - 5.0f);
-	}
+	//for (int i = NUMOBJECTS / 2; i < NUMOBJECTS; i++)
+	//{
+	//	objects[i] = new Pyramid(pyramidMesh, 
+	//		((rand() % 400) / 10.0f) - 20.0f, 
+	//		((rand() % 200) / 10.0f) - 10.0f, 
+	//		-(rand() % 1000) / 10.0f, 
+	//		((rand() % 400) / 10.0f) - 20.0f, 
+	//		((rand() % 400) / 10.0f) - 20.0f, 
+	//		((rand() % 400) / 10.0f) - 20.0f, 
+	//		((rand() % 400) / 20.0f) - 15.0f, 
+	//		((rand() % 400) / 50.0f) - 5.0f);
+	//}
 
 
+}
+
+void HelloGL::InitLighting()
+{
+	lightPos = new Vector4();
+	lightPos->x = 0.0f;
+	lightPos->y = 0.0f;
+	lightPos->z = 1.0f;
+	lightPos->w = 0.0f;
+
+
+	lightData = new Lighting();
+	lightData->ambient.x = 0.2f; 
+	lightData->ambient.y = 0.2f; 
+	lightData->ambient.z = 0.2f; 
+	lightData->ambient.w = 1.0f; 
+
+	lightData->diffuse.x = 0.8f;
+	lightData->diffuse.y = 0.8f;
+	lightData->diffuse.z = 0.8f;
+	lightData->diffuse.w = 1.0f;
+
+	lightData->specular.x = 0.2f;
+	lightData->specular.y = 0.2f;
+	lightData->specular.z = 0.2f;
+	lightData->specular.w = 1.0f;
 }
 
 HelloGL::~HelloGL(void)
@@ -123,6 +170,24 @@ void HelloGL::Update()
 	glLoadIdentity();
 	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
 
+	glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->ambient.x));
+	//glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->ambient.y));
+	//glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->ambient.z));
+	//glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->ambient.w));
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->diffuse.x));
+	//glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->diffuse.y));
+	//glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->diffuse.z));
+	//glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->diffuse.w));
+	glLightfv(GL_LIGHT0, GL_SPECULAR, &(lightData->specular.x));
+	//glLightfv(GL_LIGHT0, GL_SPECULAR, &(lightData->specular.y));
+	//glLightfv(GL_LIGHT0, GL_SPECULAR, &(lightData->specular.z));
+	//glLightfv(GL_LIGHT0, GL_SPECULAR, &(lightData->specular.w));
+	glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->x));
+	//glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->y));
+	//glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->z));
+	//glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->w));
+
+	
 	for (int i = 0; i < NUMOBJECTS; i++)
 		objects[i]->Update();
 

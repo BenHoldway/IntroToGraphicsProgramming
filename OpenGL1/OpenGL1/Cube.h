@@ -19,6 +19,8 @@ private:
 	//static GLushort* indices;
 
 	//static int numVertices, numColours, numIndices;
+	
+	Material* material;
 
 	Vector3 _position;
 	float rotX;
