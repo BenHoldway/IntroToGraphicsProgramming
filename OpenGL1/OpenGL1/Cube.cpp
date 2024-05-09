@@ -38,23 +38,24 @@ void Cube::Draw()
 
     glTexCoordPointer(2, GL_FLOAT, 0, mesh->texCoords);
 
-    material = new Material();
-    material->ambient.x = 0.8f; material->ambient.y = 0.05f; material->ambient.z = 0.05f; material->ambient.w = 1.0f;
-    material->diffuse.x = 0.8f; material->diffuse.y = 0.05f; material->diffuse.z = 0.05f; material->diffuse.w = 1.0f;
-    material->specular.x = 0.8f; material->specular.y = 0.05f; material->specular.z = 1.0f; material->specular.w = 1.0f;
-
+    InitMat();
+    glMaterialfv(GL_FRONT, GL_AMBIENT, &(material->ambient.x));
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, &(material->diffuse.x));
+    glMaterialfv(GL_FRONT, GL_SPECULAR, &(material->specular.x));
+    glMaterialf(GL_FRONT, GL_SHININESS, material->shininess);
+    
     glPushMatrix();
-
+    {
         glTranslatef(_position.x, _position.y, _position.z);
         glRotatef(rotationSpeed, rotX, rotY, rotZ);
 
         glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_SHORT, mesh->indices);
-
+    }
     glPopMatrix();
 
     glDisableClientState(GL_VERTEX_ARRAY);
     //glDisableClientState(GL_COLOR_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
@@ -70,6 +71,15 @@ void Cube::Update()
     {
         _position.z = -75.0f;
     }
+}
+
+void Cube::InitMat()
+{
+    material = new Material();
+    material->ambient.x = 1.0f; material->ambient.y = 0.8f; material->ambient.z = 0.8f; material->ambient.w = 1.0f;
+    material->diffuse.x = 1.0f; material->diffuse.y = 0.8f; material->diffuse.z = 0.8f; material->diffuse.w = 1.0f;
+    material->specular.x = 1.0f; material->specular.y = 0.0f; material->specular.z = 0.0f; material->specular.w = 1.0f;
+    material->shininess = 100.0f;
 }
 
 //Using vertices etc...

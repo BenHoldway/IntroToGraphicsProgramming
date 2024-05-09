@@ -13,6 +13,7 @@
 class Pyramid : public SceneObject
 {
 private:
+	Material* material;
 
 	Vector3 _position;
 	float rotX;
@@ -27,4 +28,5 @@ public:
 
 	void Draw();
 	void Update();
+	void InitMat();
 };

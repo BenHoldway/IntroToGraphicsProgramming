@@ -91,7 +91,7 @@ namespace MeshLoader
 		}
 	}
 
-	Mesh* MeshLoader::Load(char* path)
+	Mesh* MeshLoader::Load(char* path, bool loadTex)
 	{
 		Mesh* mesh = new Mesh();
 
@@ -107,7 +107,8 @@ namespace MeshLoader
 
 		LoadVertices(inFile, *mesh);
 		//LoadColours(inFile, *mesh);
-		LoadTexCoords(inFile, *mesh);
+		if(loadTex)
+			LoadTexCoords(inFile, *mesh);
 		LoadNormals(inFile, *mesh);
 		LoadIndices(inFile, *mesh);
 

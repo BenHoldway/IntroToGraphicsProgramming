@@ -35,6 +35,12 @@ void Pyramid::Draw()
     //glColorPointer(3, GL_FLOAT, 0, mesh->colour);
     glNormalPointer(GL_FLOAT, 0, mesh->normals);
 
+    InitMat();
+    glMaterialfv(GL_FRONT, GL_AMBIENT, &(material->ambient.x));
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, &(material->diffuse.x));
+    glMaterialfv(GL_FRONT, GL_SPECULAR, &(material->specular.x));
+    glMaterialf(GL_FRONT, GL_SHININESS, material->shininess);
+
     glPushMatrix();
 
     glTranslatef(_position.x, _position.y, _position.z);
@@ -45,7 +51,7 @@ void Pyramid::Draw()
 
     glDisableClientState(GL_VERTEX_ARRAY);
     //glDisableClientState(GL_COLOR_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
 }
 
 void Pyramid::Update()
@@ -60,4 +66,13 @@ void Pyramid::Update()
     {
         _position.z = -75.0f;
     }
+}
+
+void Pyramid::InitMat()
+{
+    material = new Material();
+    material->ambient.x = 10.0f; material->ambient.y = 0.8f; material->ambient.z = 0.8f; material->ambient.w = 1.0f;
+    material->diffuse.x = 10.0f; material->diffuse.y = 0.8f; material->diffuse.z = 0.8f; material->diffuse.w = 1.0f;
+    material->specular.x = 10.0f; material->specular.y = 0.0f; material->specular.z = 0.0f; material->specular.w = 1.0f;
+    material->shininess = 100.0f;
 }

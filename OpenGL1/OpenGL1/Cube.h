@@ -21,6 +21,7 @@ private:
 	//static int numVertices, numColours, numIndices;
 	
 	Material* material;
+	//Lighting* light;
 
 	Vector3 _position;
 	float rotX;
@@ -35,6 +36,8 @@ public:
 
 	virtual void Draw();
 	virtual void Update();
+
+	void InitMat();
 
 	//static bool Load(char* path);
 	//static bool LoadObj(char* path);

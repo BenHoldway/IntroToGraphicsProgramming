@@ -54,14 +54,17 @@ void HelloGL::InitObjects()
 	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
 	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
 
-	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt");
-	//Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
+	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", true);
+	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", false);
 
 	Texture2D* texture = new Texture2D();
 	texture->Load((char*)"Penguins.raw", 512, 512);
 
+	Texture2D* textureStars = new Texture2D();
+	textureStars->Load((char*)"stars.raw", 512, 512);
 
-	for (int i = 0; i < NUMOBJECTS; i++)
+
+	for (int i = 0; i < NUMOBJECTS / 4; i++)
 	{
 		objects[i] = new Cube(cubeMesh, texture, 
 			((rand() % 400) / 10.0f) - 20.0f, 
@@ -74,20 +77,31 @@ void HelloGL::InitObjects()
 			((rand() % 400) / 50.0f) - 5.0f);
 	}
 
-	//for (int i = NUMOBJECTS / 2; i < NUMOBJECTS; i++)
-	//{
-	//	objects[i] = new Pyramid(pyramidMesh, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 200) / 10.0f) - 10.0f, 
-	//		-(rand() % 1000) / 10.0f, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 400) / 20.0f) - 15.0f, 
-	//		((rand() % 400) / 50.0f) - 5.0f);
-	//}
+	for (int i = NUMOBJECTS / 4; i < NUMOBJECTS / 2; i++)
+	{
+		objects[i] = new Cube(cubeMesh, textureStars,
+			((rand() % 400) / 10.0f) - 20.0f,
+			((rand() % 200) / 10.0f) - 10.0f,
+			-(rand() % 1000) / 10.0f,
+			((rand() % 400) / 10.0f) - 20.0f,
+			((rand() % 400) / 10.0f) - 20.0f,
+			((rand() % 400) / 10.0f) - 20.0f,
+			((rand() % 400) / 20.0f) - 15.0f,
+			((rand() % 400) / 50.0f) - 5.0f);
+	}
 
-
+	for (int i = NUMOBJECTS / 2; i < NUMOBJECTS; i++)
+	{
+		objects[i] = new Pyramid(pyramidMesh, 
+			((rand() % 400) / 10.0f) - 20.0f, 
+			((rand() % 200) / 10.0f) - 10.0f, 
+			-(rand() % 1000) / 10.0f, 
+			((rand() % 400) / 10.0f) - 20.0f, 
+			((rand() % 400) / 10.0f) - 20.0f, 
+			((rand() % 400) / 10.0f) - 20.0f, 
+			((rand() % 400) / 20.0f) - 15.0f, 
+			((rand() % 400) / 50.0f) - 5.0f);
+	}
 }
 
 void HelloGL::InitLighting()
@@ -100,19 +114,19 @@ void HelloGL::InitLighting()
 
 
 	lightData = new Lighting();
-	lightData->ambient.x = 0.2f; 
-	lightData->ambient.y = 0.2f; 
-	lightData->ambient.z = 0.2f; 
+	lightData->ambient.x = 0.1f; 
+	lightData->ambient.y = 0.1f; 
+	lightData->ambient.z = 0.1f; 
 	lightData->ambient.w = 1.0f; 
 
 	lightData->diffuse.x = 0.8f;
-	lightData->diffuse.y = 0.8f;
-	lightData->diffuse.z = 0.8f;
+	lightData->diffuse.y = 0.0f;
+	lightData->diffuse.z = 0.0f;
 	lightData->diffuse.w = 1.0f;
 
-	lightData->specular.x = 0.2f;
-	lightData->specular.y = 0.2f;
-	lightData->specular.z = 0.2f;
+	lightData->specular.x = 0.8f;
+	lightData->specular.y = 0.0f;
+	lightData->specular.z = 0.0f;
 	lightData->specular.w = 1.0f;
 }
 
@@ -171,21 +185,9 @@ void HelloGL::Update()
 	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->ambient.x));
-	//glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->ambient.y));
-	//glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->ambient.z));
-	//glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->ambient.w));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->diffuse.x));
-	//glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->diffuse.y));
-	//glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->diffuse.z));
-	//glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->diffuse.w));
 	glLightfv(GL_LIGHT0, GL_SPECULAR, &(lightData->specular.x));
-	//glLightfv(GL_LIGHT0, GL_SPECULAR, &(lightData->specular.y));
-	//glLightfv(GL_LIGHT0, GL_SPECULAR, &(lightData->specular.z));
-	//glLightfv(GL_LIGHT0, GL_SPECULAR, &(lightData->specular.w));
 	glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->x));
-	//glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->y));
-	//glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->z));
-	//glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->w));
 
 	
 	for (int i = 0; i < NUMOBJECTS; i++)
