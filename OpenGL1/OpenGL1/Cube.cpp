@@ -19,7 +19,7 @@ Cube::~Cube()
 {
 }
 
-void Cube::Draw()
+void Cube::Draw(SceneObject* parent)
 {
     if (mesh->vertices == nullptr || mesh->normals == nullptr || mesh->indices == nullptr)
         return;
@@ -29,12 +29,10 @@ void Cube::Draw()
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
     glEnableClientState(GL_VERTEX_ARRAY);
-    //glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
 
     glNormalPointer(GL_FLOAT, 0, mesh->normals);
     glVertexPointer(3, GL_FLOAT, 0, mesh->vertices);
-    //glColorPointer(3, GL_FLOAT, 0, mesh->colour);
 
     glTexCoordPointer(2, GL_FLOAT, 0, mesh->texCoords);
 
@@ -46,7 +44,7 @@ void Cube::Draw()
     
     glPushMatrix();
     {
-        glTranslatef(position.x, position.y, position.z);
+        glTranslatef(parent->position.x, parent->position.y, parent->position.z);
         glRotatef(rotationSpeed, rotX, rotY, rotZ);
 
         glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_SHORT, mesh->indices);
@@ -54,7 +52,6 @@ void Cube::Draw()
     glPopMatrix();
 
     glDisableClientState(GL_VERTEX_ARRAY);
-    //glDisableClientState(GL_COLOR_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
@@ -202,26 +199,4 @@ void Cube::InitMat()
 //
 //    inFile.close();
 //    return true;
-//}
-
-//void Cube::Draw()
-//{
-//    if (indexedVertices == nullptr || indexedColours == nullptr || indices == nullptr)
-//        return;
-//
-//    glEnableClientState(GL_VERTEX_ARRAY);
-//    glEnableClientState(GL_COLOR_ARRAY);
-//    glVertexPointer(3, GL_FLOAT, 0, indexedVertices);
-//    glColorPointer(3, GL_FLOAT, 0, indexedColours);
-//
-//    glPushMatrix();
-//    
-//    glTranslatef(_position.x, _position.y, _position.z);
-//    glRotatef(rotationSpeed, rotX, rotY, rotZ);
-//    
-//    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, indices);
-//    glPopMatrix();
-//
-//    glDisableClientState(GL_VERTEX_ARRAY);
-//    glDisableClientState(GL_COLOR_ARRAY);
 //}

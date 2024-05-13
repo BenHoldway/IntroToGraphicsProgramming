@@ -8,7 +8,6 @@ using namespace std;
 namespace MeshLoader
 {
 	void LoadVertices(ifstream& inFile, Mesh& mesh);
-	//void LoadColours(ifstream& inFile, Mesh& mesh);
 	void LoadTexCoords(ifstream& inFile, Mesh& mesh);
 	void LoadNormals(ifstream& inFile, Mesh& mesh);
 	void LoadIndices(ifstream& inFile, Mesh& mesh);
@@ -29,23 +28,6 @@ namespace MeshLoader
 			}
 		}
 	}
-
-	//void LoadColours(ifstream& inFile, Mesh& mesh)
-	//{
-	//	inFile >> mesh.colourCount;
-
-	//	if (mesh.colourCount > 0)
-	//	{
-	//		mesh.colours = new Colour[mesh.colourCount];
-
-	//		for (int i = 0; i < mesh.colourCount; i++)
-	//		{
-	//			inFile >> mesh.colours[i].r;
-	//			inFile >> mesh.colours[i].g;
-	//			inFile >> mesh.colours[i].b;
-	//		}
-	//	}
-	//}	
 	
 	void LoadTexCoords(ifstream& inFile, Mesh& mesh)
 	{

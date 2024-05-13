@@ -15,14 +15,7 @@ class Cube : public SceneObject
 {
 private:
 public:
-	//static Vertex* indexedVertices;
-	//static Colour* indexedColours;
-	//static GLushort* indices;
-
-	//static int numVertices, numColours, numIndices;
-	
 	Material* material;
-	//Lighting* light;
 
 	float rotX;
 	float rotY;
@@ -33,7 +26,7 @@ public:
 	Cube(Mesh* _mesh, Texture2D* _texture, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount);
 	~Cube();
 
-	virtual void Draw();
+	virtual void Draw(SceneObject* parent);
 	virtual void Update();
 
 	void InitMat();
