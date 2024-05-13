@@ -14,6 +14,7 @@
 class Cube : public SceneObject
 {
 private:
+public:
 	//static Vertex* indexedVertices;
 	//static Colour* indexedColours;
 	//static GLushort* indices;
@@ -23,14 +24,12 @@ private:
 	Material* material;
 	//Lighting* light;
 
-	Vector3 _position;
 	float rotX;
 	float rotY;
 	float rotZ;
 	float rotationSpeed;
 	float increaseAmount;
 
-public:
 	Cube(Mesh* _mesh, Texture2D* _texture, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount);
 	~Cube();
 

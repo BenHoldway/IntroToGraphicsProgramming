@@ -3,9 +3,9 @@
 
 Cube::Cube(Mesh* _mesh, Texture2D* _texture, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount) : SceneObject(_mesh, _texture)
 {
-    _position.x = x;
-    _position.y = y;
-    _position.z = z;
+    position.x = x;
+    position.y = y;
+    position.z = z;
 
     rotX = _rotX;
     rotY = _rotY;
@@ -46,7 +46,7 @@ void Cube::Draw()
     
     glPushMatrix();
     {
-        glTranslatef(_position.x, _position.y, _position.z);
+        glTranslatef(position.x, position.y, position.z);
         glRotatef(rotationSpeed, rotX, rotY, rotZ);
 
         glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_SHORT, mesh->indices);
@@ -61,24 +61,24 @@ void Cube::Draw()
 
 void Cube::Update()
 {
-    _position.z += 0.2f;
+    //position.z += 0.2f;
     rotationSpeed += increaseAmount;
 
     if (rotationSpeed >= 360.0f)
         rotationSpeed = 0.0f;
 
-    if (_position.z > -5.0f)
+    if (position.z > -5.0f)
     {
-        _position.z = -75.0f;
+        position.z = -75.0f;
     }
 }
 
 void Cube::InitMat()
 {
     material = new Material();
-    material->ambient.x = 1.0f; material->ambient.y = 0.8f; material->ambient.z = 0.8f; material->ambient.w = 1.0f;
-    material->diffuse.x = 1.0f; material->diffuse.y = 0.8f; material->diffuse.z = 0.8f; material->diffuse.w = 1.0f;
-    material->specular.x = 1.0f; material->specular.y = 0.0f; material->specular.z = 0.0f; material->specular.w = 1.0f;
+    material->ambient.x = 0.2f; material->ambient.y = 0.2f; material->ambient.z = 0.2f; material->ambient.w = 1.0f;
+    material->diffuse.x = 0.8f; material->diffuse.y = 0.8f; material->diffuse.z = 0.8f; material->diffuse.w = 1.0f;
+    material->specular.x = 1.0f; material->specular.y = 1.0f; material->specular.z = 1.0f; material->specular.w = 1.0f;
     material->shininess = 100.0f;
 }
 
@@ -203,7 +203,7 @@ void Cube::InitMat()
 //    inFile.close();
 //    return true;
 //}
-//
+
 //void Cube::Draw()
 //{
 //    if (indexedVertices == nullptr || indexedColours == nullptr || indices == nullptr)

@@ -63,8 +63,7 @@ void HelloGL::InitObjects()
 	Texture2D* textureStars = new Texture2D();
 	textureStars->Load((char*)"stars.raw", 512, 512);
 
-
-	for (int i = 0; i < NUMOBJECTS / 4; i++)
+	for (int i = 0; i < NUMOBJECTS / 2; i++)
 	{
 		objects[i] = new Cube(cubeMesh, texture, 
 			((rand() % 400) / 10.0f) - 20.0f, 
@@ -77,7 +76,7 @@ void HelloGL::InitObjects()
 			((rand() % 400) / 50.0f) - 5.0f);
 	}
 
-	for (int i = NUMOBJECTS / 4; i < NUMOBJECTS / 2; i++)
+	for (int i = NUMOBJECTS / 2; i < NUMOBJECTS; i++)
 	{
 		objects[i] = new Cube(cubeMesh, textureStars,
 			((rand() % 400) / 10.0f) - 20.0f,
@@ -90,18 +89,18 @@ void HelloGL::InitObjects()
 			((rand() % 400) / 50.0f) - 5.0f);
 	}
 
-	for (int i = NUMOBJECTS / 2; i < NUMOBJECTS; i++)
-	{
-		objects[i] = new Pyramid(pyramidMesh, 
-			((rand() % 400) / 10.0f) - 20.0f, 
-			((rand() % 200) / 10.0f) - 10.0f, 
-			-(rand() % 1000) / 10.0f, 
-			((rand() % 400) / 10.0f) - 20.0f, 
-			((rand() % 400) / 10.0f) - 20.0f, 
-			((rand() % 400) / 10.0f) - 20.0f, 
-			((rand() % 400) / 20.0f) - 15.0f, 
-			((rand() % 400) / 50.0f) - 5.0f);
-	}
+	//for (int i = NUMOBJECTS / 2 + 50; i < NUMOBJECTS; i++)
+	//{
+	//	objects[i] = new Pyramid(pyramidMesh, 
+	//		((rand() % 400) / 10.0f) - 20.0f, 
+	//		((rand() % 200) / 10.0f) - 10.0f, 
+	//		-(rand() % 1000) / 10.0f, 
+	//		((rand() % 400) / 10.0f) - 20.0f, 
+	//		((rand() % 400) / 10.0f) - 20.0f, 
+	//		((rand() % 400) / 10.0f) - 20.0f, 
+	//		((rand() % 400) / 20.0f) - 15.0f, 
+	//		((rand() % 400) / 50.0f) - 5.0f);
+	//}
 }
 
 void HelloGL::InitLighting()
@@ -109,8 +108,8 @@ void HelloGL::InitLighting()
 	lightPos = new Vector4();
 	lightPos->x = 0.0f;
 	lightPos->y = 0.0f;
-	lightPos->z = 1.0f;
-	lightPos->w = 0.0f;
+	lightPos->z = -40.0f;
+	lightPos->w = 1.0f;
 
 
 	lightData = new Lighting();
@@ -120,13 +119,13 @@ void HelloGL::InitLighting()
 	lightData->ambient.w = 1.0f; 
 
 	lightData->diffuse.x = 0.8f;
-	lightData->diffuse.y = 0.0f;
-	lightData->diffuse.z = 0.0f;
+	lightData->diffuse.y = 0.8f;
+	lightData->diffuse.z = 0.8f;
 	lightData->diffuse.w = 1.0f;
 
 	lightData->specular.x = 0.8f;
-	lightData->specular.y = 0.0f;
-	lightData->specular.z = 0.0f;
+	lightData->specular.y = 0.8f;
+	lightData->specular.z = 0.8f;
 	lightData->specular.w = 1.0f;
 }
 

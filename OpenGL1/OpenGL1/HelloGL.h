@@ -10,7 +10,7 @@
 #include "MeshLoader.h"
 
 #define REFRESHRATE 16
-#define NUMOBJECTS 200
+#define NUMOBJECTS 100
 
     
 class HelloGL

@@ -71,8 +71,8 @@ void Pyramid::Update()
 void Pyramid::InitMat()
 {
     material = new Material();
-    material->ambient.x = 10.0f; material->ambient.y = 0.8f; material->ambient.z = 0.8f; material->ambient.w = 1.0f;
-    material->diffuse.x = 10.0f; material->diffuse.y = 0.8f; material->diffuse.z = 0.8f; material->diffuse.w = 1.0f;
-    material->specular.x = 10.0f; material->specular.y = 0.0f; material->specular.z = 0.0f; material->specular.w = 1.0f;
+    material->ambient.x = 0.2f; material->ambient.y = 0.2f; material->ambient.z = 0.2f; material->ambient.w = 1.0f;
+    material->diffuse.x = 0.0f; material->diffuse.y = 0.8f; material->diffuse.z = 0.8f; material->diffuse.w = 1.0f;
+    material->specular.x = 0.0f; material->specular.y = 1.0f; material->specular.z = 1.0f; material->specular.w = 1.0f;
     material->shininess = 100.0f;
 }
