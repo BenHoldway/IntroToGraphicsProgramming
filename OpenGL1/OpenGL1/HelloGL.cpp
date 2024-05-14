@@ -135,8 +135,6 @@ HelloGL::~HelloGL(void)
 	//delete cube;
 }
 
-
-
 void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clears the scene

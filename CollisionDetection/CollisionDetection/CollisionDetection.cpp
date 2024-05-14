@@ -11,6 +11,13 @@ struct Vector3
 	float x;
 	float y;
 	float z;
+
+	//Vector3(float _x, float _y, float _z)
+	//{
+	//	x = _x;
+	//	y = _y;
+	//	z = _z;
+	//}
 };
 
 struct Sphere
@@ -23,12 +30,15 @@ struct Sphere
 Sphere sphere1;
 Sphere sphere2;
 
+float speed = 0.01f;
+
 void initSpheres();
 void keyboard(unsigned char key, int x, int y);
 void reshape(int w, int h);
 void display(void);
 void drawSpheres(float distance, bool distanceSquared);
 float CalculateDistanceSquared(Sphere s1, Sphere s2);
+void CollideSpheres();
 
 float CalculateDistanceSquared(Sphere s1, Sphere s2)
 {
@@ -124,7 +134,10 @@ void drawSpheres(float distance, bool distanceSquared)
 	glPushMatrix();
 	{
 		if (distance <= radiusDistance)
+		{
 			glColor3f(1, 0, 0);
+			CollideSpheres();
+		}
 		else
 			glColor3f(0, 0, 1);
 
@@ -145,4 +158,18 @@ void drawSpheres(float distance, bool distanceSquared)
 		glutWireSphere(sphere2.radius, 20, 20);
 	}
 	glPopMatrix();
+}
+
+void CollideSpheres()
+{
+	Vector3 direction;
+	direction.x = sphere1.position.x - sphere2.position.x;
+	direction.y = sphere1.position.y - sphere2.position.y;
+	direction.z = sphere1.position.z - sphere2.position.z;
+
+	float radiusDis = sphere1.radius + sphere2.radius;
+
+	sphere2.position.x += -(radiusDis - direction.x);
+	sphere2.position.y += -(radiusDis - direction.y);
+	sphere2.position.z += -(radiusDis - direction.z);
 }
