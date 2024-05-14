@@ -1,0 +1,3 @@
+﻿  CollisionDetection.cpp
+C:\Users\h019546n\Downloads\CollisionDetection\CollisionDetection\CollisionDetection\CollisionDetection.cpp(119,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  CollisionDetection.vcxproj -> C:\Users\h019546n\Downloads\CollisionDetection\CollisionDetection\Debug\CollisionDetection.exe

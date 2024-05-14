@@ -49,6 +49,8 @@ public:
 
 	float UpdateRotation(float _rotationSpeed, float increaseAmount);
 
+	void DrawString(const char* text, Vector3* _position, Colour* _colour);
+
 	void DrawPolygon();
 	void DrawTriangle(float vertex1x, float vertex1y, float vertex2x, float vertex2y, float vertex3x, float vertex3y, float rotX, float rotY, float rotZ, float rotSpeed);
 

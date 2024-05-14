@@ -113,9 +113,9 @@ void HelloGL::InitLighting()
 
 
 	lightData = new Lighting();
-	lightData->ambient.x = 0.1f; 
-	lightData->ambient.y = 0.1f; 
-	lightData->ambient.z = 0.1f; 
+	lightData->ambient.x = 0.8f; 
+	lightData->ambient.y = 0.8f; 
+	lightData->ambient.z = 0.8f; 
 	lightData->ambient.w = 1.0f; 
 
 	lightData->diffuse.x = 0.8f;
@@ -170,6 +170,11 @@ void HelloGL::Display()
 #pragma endregion
 
 	//DrawCubeArray();
+
+	Vector3 v = { -1.4f, 0.7f, -5.0f };
+	Colour c = { 1.0f, 0.0f, 1.0f };
+
+	DrawString("Jflksfs;kjfkhal", &v, &c);
 	
 	for(int i = 0; i < NUMOBJECTS; i++)
 		objects[i]->Draw();
@@ -210,6 +215,29 @@ float HelloGL::UpdateRotation(float _rotationSpeed, float increaseAmount)
 		_rotationSpeed = 0.0f;
 
 	return _rotationSpeed;
+}
+
+void HelloGL::DrawString(const char* text, Vector3* _position, Colour* _colour)
+{
+	//glColorMaterial(GL_FRONT, GL_DIFFUSE);
+	//glEnable(GL_COLOR_MATERIAL);
+
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+
+	glPushMatrix();
+	{
+		glColor3f(_colour->r, _colour->g, _colour->b);
+		glTranslatef(_position->x, _position->y, _position->z);
+		glRasterPos2f(0.0f, 0.0f);
+		glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)text);
+	}
+	glPopMatrix();
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_TEXTURE_2D);
+
+	//glDisable(GL_COLOR_MATERIAL);
 }
 
 
