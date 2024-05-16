@@ -62,7 +62,7 @@ void Cube::Draw()
 void Cube::Update()
 {
     //position.z += 0.2f;
-    rotationSpeed += increaseAmount;
+    //rotationSpeed += increaseAmount;
 
     if (rotationSpeed >= 360.0f)
         rotationSpeed = 0.0f;

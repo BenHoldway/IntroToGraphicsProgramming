@@ -1,11 +1,16 @@
 #include "HelloGL.h"
 #include "GLUTCallbacks.h"
 
+#define PI 1.1415
+
 HelloGL::HelloGL(int argc, char* argv[])
 {
 	//rotationSpeed1 = 0.0f;
 	//rotationSpeed2 = 0.0f;
 	//rotationSpeed3 = 0.0f;
+
+	yangle = 0;
+	radius = 10;
 
 	isKeyDown = false;
 
@@ -28,6 +33,7 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutKeyboardFunc(GLUTCallbacks::KeyboardDown);
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
+	glutPassiveMotionFunc(GLUTCallbacks::MouseMovement);
 
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
 
@@ -49,10 +55,6 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitObjects()
 {
-	camera = new Camera();
-	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
-	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
-	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", true);
 	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", false);
@@ -88,6 +90,10 @@ void HelloGL::InitObjects()
 			((rand() % 400) / 20.0f) - 15.0f,
 			((rand() % 400) / 50.0f) - 5.0f);
 	}
+	camera = new Camera();
+	camera->eye.x = objects[0]->position.x; camera->eye.y = objects[0]->position.y; camera->eye.z = objects[0]->position.z - radius;
+	camera->center.x = objects[0]->position.x; camera->center.y = objects[0]->position.y; camera->center.z = objects[0]->position.z;
+	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
 
 	//for (int i = NUMOBJECTS / 2 + 50; i < NUMOBJECTS; i++)
 	//{
@@ -174,8 +180,8 @@ void HelloGL::Display()
 
 	DrawString("Jflksfs;kjfkhal", &v, &c);
 	
-	for(int i = 0; i < NUMOBJECTS; i++)
-		objects[i]->Draw();
+	//for(int i = 0; i < NUMOBJECTS; i++)
+		objects[0]->Draw();
 
 	glFlush();
 	glutSwapBuffers();
@@ -192,8 +198,8 @@ void HelloGL::Update()
 	glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->x));
 
 	
-	for (int i = 0; i < NUMOBJECTS; i++)
-		objects[i]->Update();
+//	for (int i = 0; i < NUMOBJECTS; i++)
+		objects[0]->Update();
 
 	glutPostRedisplay();
 
@@ -268,7 +274,21 @@ void HelloGL::KeyboardUp(unsigned char key, int x, int y)
 	isKeyDown = false;
 }
 
+void HelloGL::MouseMovement(int x, int y)
+{
+	yangle = (y - 800/2) * 0.01f;
 
+	//std::cout << std::max(std::min((int)(radius * tan(yangle)), 85), -85) << std::endl;
+
+	//yangle = std::max(std::min((int)yangle, 85), -85);
+	//std::cout << yangle << std::endl;
+
+	camera->eye.y = std::max(std::min((int)(radius * yangle ), 85), -85);
+	camera->eye.z = std::max(std::min((int)(radius * yangle), (int)objects[0]->position.z + radius), (int)objects[0]->position.z);
+	std::cout << camera->eye.y << std::endl;
+
+	//std::cout << x << ", " << y << std::endl;
+}
 
 
 void HelloGL::DrawPolygon()

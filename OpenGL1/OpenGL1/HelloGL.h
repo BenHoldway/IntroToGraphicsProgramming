@@ -1,8 +1,10 @@
 #pragma once
 
+#define NOMINMAX
 #include <Windows.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include <math.h>
 #include "GL\freeglut.h"
 #include "Structures.h"
 #include "Cube.h"
@@ -23,6 +25,9 @@ public:
 	//float rotationSpeed1;
 	//float rotationSpeed2;
 	//float rotationSpeed3;
+
+	float yangle;
+	int radius;
 
 	bool isKeyDown;
 
@@ -59,6 +64,7 @@ public:
 
 	void KeyboardDown(unsigned char key, int x, int y);
 	void KeyboardUp(unsigned char key, int x, int y);
+	void MouseMovement(int x, int y);
 
 	//void DrawScalene();
 	//void DrawIsosceles();
