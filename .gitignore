@@ -28,6 +28,3 @@
 *.exe
 *.out
 *.app
-
-#visual studio nonesense
-*.vs/*

@@ -22,7 +22,7 @@ public:
 	float rotX;
 	float rotY;
 	float rotZ;
-	float rotationSpeed;
+	float rotation;
 	float increaseAmount;
 
 	float orbitRadius;
@@ -30,9 +30,11 @@ public:
 
 	float horizontalAngle;
 
+	bool isEmissive;
+
 	SceneObject* parent;
 
-	Cube(Mesh* _mesh, Texture2D* _texture, SceneObject* parentObj, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount, float _orbitRadius, float _orbitSpeed);
+	Cube(Mesh* _mesh, Texture2D* _texture, SceneObject* parentObj, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount, float _orbitRadius, float _orbitSpeed, bool _isEmissive);
 	~Cube();
 
 	virtual void Draw();

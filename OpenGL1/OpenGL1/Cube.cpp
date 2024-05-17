@@ -1,7 +1,7 @@
 #include "Cube.h"
 #include <sstream>
 
-Cube::Cube(Mesh* _mesh, Texture2D* _texture, SceneObject* parentObj, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount, float _orbitRadius, float _orbitSpeed) : SceneObject(_mesh, _texture)
+Cube::Cube(Mesh* _mesh, Texture2D* _texture, SceneObject* parentObj, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotation, float _increaseAmount, float _orbitRadius, float _orbitSpeed, bool _isEmissive) : SceneObject(_mesh, _texture)
 {
     parent = parentObj;
     orbitRadius = _orbitRadius;
@@ -23,10 +23,11 @@ Cube::Cube(Mesh* _mesh, Texture2D* _texture, SceneObject* parentObj, GLfloat x, 
     rotX = _rotX;
     rotY = _rotY;
     rotZ = _rotZ;
-    rotationSpeed = _rotationSpeed;
+    rotation = _rotation;
     
     increaseAmount = _increaseAmount;
 
+    isEmissive = _isEmissive;
 
     horizontalAngle = 0.0f;
 }
@@ -61,7 +62,7 @@ void Cube::Draw()
     glPushMatrix();
     {
         glTranslatef(position.x, position.y, position.z);
-        glRotatef(rotationSpeed, rotX, rotY, rotZ);
+        glRotatef(rotation, rotX, rotY, rotZ);
 
         glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_SHORT, mesh->indices);
     }
@@ -74,29 +75,28 @@ void Cube::Draw()
 
 void Cube::Update()
 {
-    //position.z += 0.2f;
-
     if (parent != nullptr)
         Orbit();
 
-    rotationSpeed += increaseAmount;
+    rotation += increaseAmount;
 
-    if (rotationSpeed >= 360.0f)
-        rotationSpeed = 0.0f;
-
-    //if (position.z > -5.0f)
-    //{
-    //    position.z = -75.0f;
-    //}
+    if (rotation >= 360.0f)
+        rotation = 0.0f;
 }
 
 void Cube::InitMat()
 {
     material = new Material();
-    material->ambient.x = 0.2f; material->ambient.y = 0.2f; material->ambient.z = 0.2f; material->ambient.w = 1.0f;
+    material->ambient.x = 0.0f; material->ambient.y = 0.0f; material->ambient.z = 0.0f; material->ambient.w = 0.0f;
     material->diffuse.x = 0.8f; material->diffuse.y = 0.8f; material->diffuse.z = 0.8f; material->diffuse.w = 1.0f;
     material->specular.x = 1.0f; material->specular.y = 1.0f; material->specular.z = 1.0f; material->specular.w = 1.0f;
     material->shininess = 100.0f;
+    if (isEmissive)
+    {
+        material->ambient.x = 1.0f; material->ambient.y = 1.0f; material->ambient.z = 0.0f; material->ambient.w = 1.0f;
+        material->emissive.x = 0.5f; material->emissive.y = 0.5f; material->emissive.z = 0.5f; material->emissive.w = 1.0f;
+        glMaterialfv(GL_FRONT, GL_EMISSION, &(material->emissive.x));
+    }
 }
 
 void Cube::Orbit()

@@ -1,4 +1,9 @@
-﻿  HelloGL.cpp
-F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(268,26): warning C4305: 'initializing': truncation from 'double' to 'float'
-F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(271,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  OpenGL1.vcxproj -> F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe
+﻿  Cube.cpp
+C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Cube.cpp(104,27): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  GLUCallbacks.cpp
+  HelloGL.cpp
+C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(231,26): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(234,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  main.cpp
+  Generating Code...
+  OpenGL1.vcxproj -> C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe

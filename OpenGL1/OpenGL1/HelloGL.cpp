@@ -53,6 +53,8 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glEnable(GL_LIGHT0);
 
 	glCullFace(GL_BACK);
+
+	glutSetCursor(GLUT_CURSOR_NONE);
 }
 
 void HelloGL::InitMenu()
@@ -90,66 +92,27 @@ void HelloGL::InitObjects()
 	Texture2D* textureStars = new Texture2D();
 	textureStars->Load((char*)"stars.raw", 512, 512);
 
-	/*Parent/ Star*/ objects[0] = new Cube(cubeMesh, textureStars, nullptr, 0, 0, -10.0f, 0, 5.0f, 2.5f, 5.0f, 0.5f, 0.0f, 0.0f);
-	/*Orbiter/ Planet 1*/ objects[1] = new Cube(cubeMesh, texture, objects[0], 0, 0, 0, 0.0f, 0.2f, 0.0f, 0.5f, 0.25f, 20.0f, 0.02f);
-	/*Orbiter/ Planet 2*/ objects[2] = new Cube(cubeMesh, texture, objects[0], 0, 0, 0, 0.0f, 0.2f, 0.2f, 0.5f, 0.25f, 50.0f, 0.007f);
+	/*Parent/ Star*/ objects[0] = new Cube(cubeMesh, textureStars, nullptr, 0, 0, -10.0f, 0, 5.0f, 2.5f, 5.0f, 0.5f, 0.0f, 0.0f, true);
+	/*Orbiter/ Planet 1*/ objects[1] = new Cube(cubeMesh, texture, objects[0], 0, 0, 0, 0.0f, 0.2f, 0.0f, 0.5f, 0.25f, 20.0f, 0.003f, false);
+	/*Orbiter/ Planet 2*/ objects[2] = new Cube(cubeMesh, texture, objects[0], 0, 0, 0, 0.0f, 0.2f, 0.2f, 0.5f, 0.25f, 50.0f, 0.0005f, false);
 
 	cameraFocus = objects[0];
-
-	//for (int i = 0; i < NUMOBJECTS / 2; i++)
-	//{
-	//	objects[i] = new Cube(cubeMesh, texture, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 200) / 10.0f) - 10.0f, 
-	//		-(rand() % 1000) / 10.0f, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 400) / 20.0f) - 15.0f, 
-	//		((rand() % 400) / 50.0f) - 5.0f);
-	//}
-
-	//for (int i = NUMOBJECTS / 2; i < NUMOBJECTS; i++)
-	//{
-	//	objects[i] = new Cube(cubeMesh, textureStars,
-	//		((rand() % 400) / 10.0f) - 20.0f,
-	//		((rand() % 200) / 10.0f) - 10.0f,
-	//		-(rand() % 1000) / 10.0f,
-	//		((rand() % 400) / 10.0f) - 20.0f,
-	//		((rand() % 400) / 10.0f) - 20.0f,
-	//		((rand() % 400) / 10.0f) - 20.0f,
-	//		((rand() % 400) / 20.0f) - 15.0f,
-	//		((rand() % 400) / 50.0f) - 5.0f);
-	//}
-
-	//for (int i = NUMOBJECTS / 2 + 50; i < NUMOBJECTS; i++)
-	//{
-	//	objects[i] = new Pyramid(pyramidMesh, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 200) / 10.0f) - 10.0f, 
-	//		-(rand() % 1000) / 10.0f, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 400) / 10.0f) - 20.0f, 
-	//		((rand() % 400) / 20.0f) - 15.0f, 
-	//		((rand() % 400) / 50.0f) - 5.0f);
-	//}
 }
 
 void HelloGL::InitLighting()
 {
 	lightPos = new Vector4();
-	lightPos->x = 0.0f;
-	lightPos->y = 0.0f;
-	lightPos->z = -5.0f;
+	lightPos->x = objects[0]->position.x;
+	lightPos->y = objects[0]->position.y;
+	lightPos->z = objects[0]->position.z;
 	lightPos->w = 1.0f;
 
 
 	lightData = new Lighting();
-	lightData->ambient.x = 0.1f; 
-	lightData->ambient.y = 0.1f; 
-	lightData->ambient.z = 0.1f; 
-	lightData->ambient.w = 1.0f; 
+	lightData->ambient.x = 0.0f; 
+	lightData->ambient.y = 0.0f; 
+	lightData->ambient.z = 0.0f; 
+	lightData->ambient.w = 0.0f; 
 
 	lightData->diffuse.x = 0.8f;
 	lightData->diffuse.y = 0.8f;
@@ -243,10 +206,10 @@ void HelloGL::KeyboardDown(unsigned char key, int x, int y)
 		camera->eye.x -= 0.01f; camera->center.x -= 0.01f;
 		break;
 	case 'w':
-		radius = std::max(radius -= 0.2f, 5.0f);
+		radius = std::max(radius -= 0.2f, 10.0f);
 		break;
 	case 's':
-		radius = std::min(radius += 0.2f, 15.0f);
+		radius = std::min(radius += 0.2f, 30.0f);
 		break;
 	}
 
