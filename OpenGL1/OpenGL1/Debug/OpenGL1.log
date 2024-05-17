@@ -1,12 +1,4 @@
 ﻿  HelloGL.cpp
-C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(286,26): warning C4244: '=': conversion from 'const _Ty' to 'float', possible loss of data
-          with
-          [
-              _Ty=int
-          ]
-C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(287,26): warning C4244: '=': conversion from 'const _Ty' to 'float', possible loss of data
-          with
-          [
-              _Ty=int
-          ]
-  OpenGL1.vcxproj -> C:\Users\h019546n\Documents\GitHub\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(264,26): warning C4305: 'initializing': truncation from 'double' to 'float'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(267,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  OpenGL1.vcxproj -> F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe

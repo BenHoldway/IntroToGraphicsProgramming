@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include "GL\freeglut.h"
 #include "Structures.h"
@@ -26,8 +27,9 @@ public:
 	//float rotationSpeed2;
 	//float rotationSpeed3;
 
-	float yangle;
-	int radius;
+	float verticalAngle;
+	float horizontalAngle;
+	float radius;
 
 	bool isKeyDown;
 

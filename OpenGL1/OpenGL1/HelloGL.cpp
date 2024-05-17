@@ -1,16 +1,15 @@
 #include "HelloGL.h"
 #include "GLUTCallbacks.h"
 
-#define PI 1.1415
-
 HelloGL::HelloGL(int argc, char* argv[])
 {
 	//rotationSpeed1 = 0.0f;
 	//rotationSpeed2 = 0.0f;
 	//rotationSpeed3 = 0.0f;
 
-	yangle = 0;
-	radius = 10;
+	verticalAngle = 0;
+	horizontalAngle = 0;
+	radius = 10.0f;
 
 	isKeyDown = false;
 
@@ -91,8 +90,8 @@ void HelloGL::InitObjects()
 			((rand() % 400) / 50.0f) - 5.0f);
 	}
 	camera = new Camera();
-	camera->eye.x = objects[0]->position.x; camera->eye.y = objects[0]->position.y; camera->eye.z = objects[0]->position.z - radius;
-	camera->center.x = objects[0]->position.x; camera->center.y = objects[0]->position.y; camera->center.z = objects[0]->position.z;
+	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 0.0f;
+	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
 	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
 
 	//for (int i = NUMOBJECTS / 2 + 50; i < NUMOBJECTS; i++)
@@ -145,43 +144,14 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clears the scene
 
-	#pragma region Drawing Flat Polygons
-	//DrawPolygon();
-
-	////Scalene Triangle
-	//glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
-	//DrawTriangle(-0.95f, -0.25f, -0.4f, 0.25f, 0.55f, -0.25f, 1.0f, 0.5f, -1.0f, rotationSpeed1);
-
-	////Isosceles Triangle
-	//glColor4f(0.0f, 1.0f, 0.0f, 0.0f);
-	//DrawTriangle(0.0f, 0.2f, 0.25f, 0.9f, 0.5f, 0.2f, 1.0f, 0.4f, 0.0f, rotationSpeed2);
-
-	////Equilateral Triangle
-	//glColor4f(0.0f, 0.0f, 1.0f, 0.0f);
-	//DrawTriangle(-0.5f, -0.9f, 0.0f, -0.1f, 0.5f, -0.9f, -0.4f, 0.6f, 1.7f, rotationSpeed1);
-
-	////Acute Triangle
-	//glColor4f(1.0f, 0.0f, 1.0f, 0.0f);
-	//DrawTriangle(-0.9f, 0.4f, -0.65f, 0.8f, -0.1f, 0.4f, -1.0f, 0.8f, -0.8f, rotationSpeed3);
-
-	////Right Angle Triangle
-	//glColor4f(0.4f, 0.6f, 1.0f, 0.4f);
-	//DrawTriangle(0.3f, 0.5f, 0.3f, 0.8f, 0.95f, 0.5f, 0.2f, 0.8f, 0.2f, rotationSpeed3);
-
-	////Obtuse Triangle
-	//glColor4f(0.8f, 0.5f, 1.0f, 0.0f);
-	//DrawTriangle(0.4f, 0.2f, 0.85f, -0.1f, 0.85f, -0.85f, 0.4f, 0.4f, -1.8f, rotationSpeed2);
-#pragma endregion
-
-	//DrawCubeArray();
 
 	Vector3 v = { -1.4f, 0.7f, -5.0f };
 	Colour c = { 1.0f, 0.0f, 1.0f };
 
 	DrawString("Jflksfs;kjfkhal", &v, &c);
 	
-	//for(int i = 0; i < NUMOBJECTS; i++)
-		objects[0]->Draw();
+	for(int i = 0; i < NUMOBJECTS; i++)
+		objects[i]->Draw();
 
 	glFlush();
 	glutSwapBuffers();
@@ -190,7 +160,22 @@ void HelloGL::Display()
 void HelloGL::Update()
 {
 	glLoadIdentity();
-	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
+	camera->center = objects[0]->position;
+
+	gluLookAt
+	(
+		camera->center.x + radius * cosf(horizontalAngle) * cosf(verticalAngle),
+		camera->center.y + radius * sinf(verticalAngle),
+		camera->center.z + radius * sinf(horizontalAngle) * cosf(verticalAngle),
+
+		camera->center.x,
+		camera->center.y,
+		camera->center.z,
+
+		camera->up.x,
+		camera->up.y,
+		camera->up.z
+	);
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->diffuse.x));
@@ -198,8 +183,8 @@ void HelloGL::Update()
 	glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->x));
 
 	
-//	for (int i = 0; i < NUMOBJECTS; i++)
-		objects[0]->Update();
+	for (int i = 0; i < NUMOBJECTS; i++)
+		objects[i]->Update();
 
 	glutPostRedisplay();
 
@@ -223,9 +208,6 @@ float HelloGL::UpdateRotation(float _rotationSpeed, float increaseAmount)
 
 void HelloGL::DrawString(const char* text, Vector3* _position, Colour* _colour)
 {
-	//glColorMaterial(GL_FRONT, GL_DIFFUSE);
-	//glEnable(GL_COLOR_MATERIAL);
-
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
 
@@ -240,8 +222,6 @@ void HelloGL::DrawString(const char* text, Vector3* _position, Colour* _colour)
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
-
-	//glDisable(GL_COLOR_MATERIAL);
 }
 
 
@@ -261,12 +241,14 @@ void HelloGL::KeyboardDown(unsigned char key, int x, int y)
 		camera->eye.x -= 0.01f; camera->center.x -= 0.01f;
 		break;
 	case 'w':
-		camera->eye.y += 0.01f; camera->center.y += 0.01f;
+		radius = std::max(radius -= 0.2f, 5.0f);
 		break;
 	case 's':
-		camera->eye.y -= 0.01f; camera->center.y -= 0.01f;
+		radius = std::min(radius += 0.2f, 15.0f);
 		break;
 	}
+
+	std::cout << radius << std::endl;
 }
 
 void HelloGL::KeyboardUp(unsigned char key, int x, int y)
@@ -276,18 +258,13 @@ void HelloGL::KeyboardUp(unsigned char key, int x, int y)
 
 void HelloGL::MouseMovement(int x, int y)
 {
-	yangle = (y - 800/2) * 0.01f;
+	verticalAngle = (y - 800 / 2) * 0.01f;
+	horizontalAngle = (x - 800 / 2) * 0.01f;
 
-	//std::cout << std::max(std::min((int)(radius * tan(yangle)), 85), -85) << std::endl;
+	float max_verticalAngle = 85 * M_PI / 180;
 
-	//yangle = std::max(std::min((int)yangle, 85), -85);
-	//std::cout << yangle << std::endl;
-
-	camera->eye.y = std::max(std::min((int)(radius * yangle ), 85), -85);
-	camera->eye.z = std::max(std::min((int)(radius * yangle), (int)objects[0]->position.z + radius), (int)objects[0]->position.z);
-	std::cout << camera->eye.y << std::endl;
-
-	//std::cout << x << ", " << y << std::endl;
+	verticalAngle = std::max(std::min(verticalAngle, max_verticalAngle), -max_verticalAngle);
+	horizontalAngle = fmod(horizontalAngle, M_PI * 2.0f);
 }
 
 
