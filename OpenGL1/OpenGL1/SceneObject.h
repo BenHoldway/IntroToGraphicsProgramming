@@ -14,6 +14,6 @@ public:
 	SceneObject(Mesh* _mesh, Texture2D* _texture);
 	virtual ~SceneObject();
 
-	virtual void Draw(SceneObject* parent);
+	virtual void Draw();
 	virtual void Update();
 };

@@ -11,7 +11,7 @@ SceneObject::~SceneObject()
 
 }
 
-void SceneObject::Draw(SceneObject* parent)
+void SceneObject::Draw()
 {
 
 }

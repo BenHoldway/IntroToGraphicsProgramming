@@ -9,4 +9,6 @@ namespace GLUTCallbacks
 	void Timer(int preferredRefresh);
 	void KeyboardDown(unsigned char key, int x, int y);
 	void KeyboardUp(unsigned char key, int x, int y);
+	void MouseMovement(int x, int y);
+	void CreateMenu(int val);
 }

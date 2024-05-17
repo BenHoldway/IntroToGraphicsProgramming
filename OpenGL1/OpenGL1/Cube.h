@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 #include <gl/GL.h>
 #include <gl/GLU.h>
@@ -23,13 +25,22 @@ public:
 	float rotationSpeed;
 	float increaseAmount;
 
-	Cube(Mesh* _mesh, Texture2D* _texture, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount);
+	float orbitRadius;
+	float orbitSpeed;
+
+	float horizontalAngle;
+
+	SceneObject* parent;
+
+	Cube(Mesh* _mesh, Texture2D* _texture, SceneObject* parentObj, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount, float _orbitRadius, float _orbitSpeed);
 	~Cube();
 
-	virtual void Draw(SceneObject* parent);
+	virtual void Draw();
 	virtual void Update();
 
 	void InitMat();
+
+	void Orbit();
 
 	//static bool Load(char* path);
 	//static bool LoadObj(char* path);

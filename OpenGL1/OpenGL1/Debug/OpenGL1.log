@@ -1,2 +1,4 @@
 ﻿  HelloGL.cpp
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(268,26): warning C4305: 'initializing': truncation from 'double' to 'float'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(271,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   OpenGL1.vcxproj -> F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe

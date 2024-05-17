@@ -9,9 +9,16 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 	isKeyDown = false;
 
+	verticalAngle = 0.0f;
+	horizontalAngle = 0.0f;
+	radius = 40.0f;
+
+	mouseAngle = 0.0f;
+
 	GLUTCallbacks::Init(this);
 
 	InitGL(argc, argv);
+	InitMenu();
 	InitObjects();
 	InitLighting();
 
@@ -28,6 +35,7 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutKeyboardFunc(GLUTCallbacks::KeyboardDown);
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
+	glutPassiveMotionFunc(GLUTCallbacks::MouseMovement);
 
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
 
@@ -47,6 +55,25 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glCullFace(GL_BACK);
 }
 
+void HelloGL::InitMenu()
+{
+	glutCreateMenu(GLUTCallbacks::CreateMenu);
+	glutAddMenuEntry("Star", 0);
+	glutAddMenuEntry("Planet 1", 1);
+	glutAddMenuEntry("Planet 2", 2);
+	glutAddMenuEntry("Cancel", -1);
+
+	glutAttachMenu(GLUT_LEFT_BUTTON);
+}
+
+void HelloGL::ObjectSelect(int val)
+{
+	if (val == -1)
+		return;
+
+	cameraFocus = objects[val];
+}
+
 void HelloGL::InitObjects()
 {
 	camera = new Camera();
@@ -63,10 +90,11 @@ void HelloGL::InitObjects()
 	Texture2D* textureStars = new Texture2D();
 	textureStars->Load((char*)"stars.raw", 512, 512);
 
-	planet = new Cube(cubeMesh, textureStars, 0, 0, -10.0f, 0, 5.0f, 2.5f, 5.0f, 0.5f);
-	orbiter = new Cube(cubeMesh, texture, 0, 0, 0, 0, 0, 0, 0, 0);
+	/*Parent/ Star*/ objects[0] = new Cube(cubeMesh, textureStars, nullptr, 0, 0, -10.0f, 0, 5.0f, 2.5f, 5.0f, 0.5f, 0.0f, 0.0f);
+	/*Orbiter/ Planet 1*/ objects[1] = new Cube(cubeMesh, texture, objects[0], 0, 0, 0, 0.0f, 0.2f, 0.0f, 0.5f, 0.25f, 20.0f, 0.02f);
+	/*Orbiter/ Planet 2*/ objects[2] = new Cube(cubeMesh, texture, objects[0], 0, 0, 0, 0.0f, 0.2f, 0.2f, 0.5f, 0.25f, 50.0f, 0.007f);
 
-	orbitalSystem = new OrbitalSystem(0, 0, -20.0f, 2, planet, orbiter);
+	cameraFocus = objects[0];
 
 	//for (int i = 0; i < NUMOBJECTS / 2; i++)
 	//{
@@ -145,9 +173,8 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clears the scene
 
-	//for(int i = 0; i < NUMOBJECTS; i++)
-	//	objects[i]->Draw();
-	planet->Draw();
+	for(int i = 0; i < NUMOBJECTS; i++)
+		objects[i]->Draw();
 
 	glFlush();
 	glutSwapBuffers();
@@ -156,7 +183,22 @@ void HelloGL::Display()
 void HelloGL::Update()
 {
 	glLoadIdentity();
-	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
+	camera->center = cameraFocus->position;
+
+	gluLookAt
+	(
+		camera->center.x + radius * cosf(horizontalAngle) * cosf(verticalAngle),
+		camera->center.y + radius * sinf(verticalAngle),
+		camera->center.z + radius * sinf(horizontalAngle) * cosf(verticalAngle),
+
+		camera->center.x, 
+		camera->center.y,
+		camera->center.z, 
+
+		camera->up.x, 
+		camera->up.y, 
+		camera->up.z
+	);
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->diffuse.x));
@@ -164,9 +206,8 @@ void HelloGL::Update()
 	glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->x));
 
 	
-	//for (int i = 0; i < NUMOBJECTS; i++)
-	//	objects[i]->Update();
-	planet->Update();
+	for (int i = 0; i < NUMOBJECTS; i++)
+		objects[i]->Update();
 
 	glutPostRedisplay();
 
@@ -202,15 +243,30 @@ void HelloGL::KeyboardDown(unsigned char key, int x, int y)
 		camera->eye.x -= 0.01f; camera->center.x -= 0.01f;
 		break;
 	case 'w':
-		camera->eye.y += 0.01f; camera->center.y += 0.01f;
+		radius = std::max(radius -= 0.2f, 5.0f);
 		break;
 	case 's':
-		camera->eye.y -= 0.01f; camera->center.y -= 0.01f;
+		radius = std::min(radius += 0.2f, 15.0f);
 		break;
 	}
+
+	std::cout << radius << std::endl;
 }
 
 void HelloGL::KeyboardUp(unsigned char key, int x, int y)
 {
 	isKeyDown = false;
+}
+
+void HelloGL::MouseMovement(int x, int y)
+{
+	verticalAngle = (y - 800 / 2) * 0.01f;
+	horizontalAngle = (x - 800 / 2) * 0.01f;
+
+	//mouseAngle = 90 + atan2f(camera->eye.y - verticalAngle, camera->eye.x - horizontalAngle) * 180 / M_PI;
+
+	float max_verticalAngle = 85 * M_PI / 180;
+
+	verticalAngle = std::max(std::min(verticalAngle, max_verticalAngle), -max_verticalAngle);
+	horizontalAngle = fmod(horizontalAngle, M_PI * 2.0f);
 }

@@ -1,11 +1,24 @@
 #include "Cube.h"
 #include <sstream>
 
-Cube::Cube(Mesh* _mesh, Texture2D* _texture, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount) : SceneObject(_mesh, _texture)
+Cube::Cube(Mesh* _mesh, Texture2D* _texture, SceneObject* parentObj, GLfloat x, GLfloat y, GLfloat z, float _rotX, float _rotY, float _rotZ, float _rotationSpeed, float _increaseAmount, float _orbitRadius, float _orbitSpeed) : SceneObject(_mesh, _texture)
 {
-    position.x = x;
-    position.y = y;
-    position.z = z;
+    parent = parentObj;
+    orbitRadius = _orbitRadius;
+    orbitSpeed = _orbitSpeed;
+
+    if (parent != nullptr)
+    {
+        position.x = parent->position.x - orbitRadius;
+        position.y = parent->position.y;
+        position.z = parent->position.z;
+    }
+    else
+    {
+        position.x = x;
+        position.y = y;
+        position.z = z;
+    }
 
     rotX = _rotX;
     rotY = _rotY;
@@ -13,17 +26,25 @@ Cube::Cube(Mesh* _mesh, Texture2D* _texture, GLfloat x, GLfloat y, GLfloat z, fl
     rotationSpeed = _rotationSpeed;
     
     increaseAmount = _increaseAmount;
+
+
+    horizontalAngle = 0.0f;
 }
 
 Cube::~Cube()
 {
 }
 
-void Cube::Draw(SceneObject* parent)
+void Cube::Draw()
 {
     if (mesh->vertices == nullptr || mesh->normals == nullptr || mesh->indices == nullptr)
         return;
 
+    InitMat();
+    glMaterialfv(GL_FRONT, GL_AMBIENT, &(material->ambient.x));
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, &(material->diffuse.x));
+    glMaterialfv(GL_FRONT, GL_SPECULAR, &(material->specular.x));
+    glMaterialf(GL_FRONT, GL_SHININESS, material->shininess);
 
     glBindTexture(GL_TEXTURE_2D, texture->GetID());
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -36,15 +57,10 @@ void Cube::Draw(SceneObject* parent)
 
     glTexCoordPointer(2, GL_FLOAT, 0, mesh->texCoords);
 
-    InitMat();
-    glMaterialfv(GL_FRONT, GL_AMBIENT, &(material->ambient.x));
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, &(material->diffuse.x));
-    glMaterialfv(GL_FRONT, GL_SPECULAR, &(material->specular.x));
-    glMaterialf(GL_FRONT, GL_SHININESS, material->shininess);
     
     glPushMatrix();
     {
-        glTranslatef(parent->position.x, parent->position.y, parent->position.z);
+        glTranslatef(position.x, position.y, position.z);
         glRotatef(rotationSpeed, rotX, rotY, rotZ);
 
         glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_SHORT, mesh->indices);
@@ -59,15 +75,19 @@ void Cube::Draw(SceneObject* parent)
 void Cube::Update()
 {
     //position.z += 0.2f;
+
+    if (parent != nullptr)
+        Orbit();
+
     rotationSpeed += increaseAmount;
 
     if (rotationSpeed >= 360.0f)
         rotationSpeed = 0.0f;
 
-    if (position.z > -5.0f)
-    {
-        position.z = -75.0f;
-    }
+    //if (position.z > -5.0f)
+    //{
+    //    position.z = -75.0f;
+    //}
 }
 
 void Cube::InitMat()
@@ -77,6 +97,15 @@ void Cube::InitMat()
     material->diffuse.x = 0.8f; material->diffuse.y = 0.8f; material->diffuse.z = 0.8f; material->diffuse.w = 1.0f;
     material->specular.x = 1.0f; material->specular.y = 1.0f; material->specular.z = 1.0f; material->specular.w = 1.0f;
     material->shininess = 100.0f;
+}
+
+void Cube::Orbit()
+{
+    horizontalAngle = fmod(horizontalAngle + orbitSpeed, M_PI * 2.0f);
+    
+    position.x = parent->position.x + orbitRadius * cosf(horizontalAngle) * cosf(0);
+    position.y = parent->position.y + orbitRadius * sinf(0);
+    position.z = parent->position.z + orbitRadius * sinf(horizontalAngle) * cosf(0);
 }
 
 //Using vertices etc...
