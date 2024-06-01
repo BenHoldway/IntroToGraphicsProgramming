@@ -39,10 +39,13 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
 
+	//Allows access to modify camera's perspective and aspect ratio etc
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, 800, 800);
 	gluPerspective(45, 1, 1, 1000);
+
+	//Allows access to transform, rotate, scale etc different objects
 	glMatrixMode(GL_MODELVIEW);
 
 	glEnable(GL_TEXTURE_2D);
