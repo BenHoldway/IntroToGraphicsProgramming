@@ -30,8 +30,8 @@ void HelloGL::InitGL(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
-	glutInitWindowSize(1920, 1080);
-	glutCreateWindow("Simple OpenGL Program");
+	glutInitWindowSize(1080, 1080);
+	glutCreateWindow("Solar System Simulation");
 
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutKeyboardFunc(GLUTCallbacks::KeyboardDown);
@@ -44,10 +44,8 @@ void HelloGL::InitGL(int argc, char* argv[])
 	//Allows access to modify camera's perspective and aspect ratio etc
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glViewport(0, 0, 1920, 1080);
-	gluPerspective(45, 1920/1080, 1, 1000);
-
-	glutFullScreen();
+	glViewport(0, 0, 1080, 1080);
+	gluPerspective(45, 1, 1, 1000);
 
 	//Allows access to transform, rotate, scale etc different objects
 	glMatrixMode(GL_MODELVIEW);
@@ -60,25 +58,23 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glEnable(GL_LIGHT0);
 
 	glCullFace(GL_BACK);
-
-	//glutSetCursor(GLUT_CURSOR_NONE);
-
-	//glutReshapeWindow(1920, 1080);
 }
 
+//Initialises menu with planet/object names
 void HelloGL::InitMenu()
 {
 	glutCreateMenu(GLUTCallbacks::CreateMenu);
-	glutAddMenuEntry(system->objects[0]->name.c_str(), 0);
-	glutAddMenuEntry(system->objects[1]->name.c_str(), 1);
-	glutAddMenuEntry(system->objects[2]->name.c_str(), 2);
-	glutAddMenuEntry(system->objects[3]->name.c_str(), 3);
-	//glutAddMenuEntry(system->objects[4]->name.c_str(), 4);
-	//glutAddMenuEntry(system->objects[5]->name.c_str(), 5);
-	//glutAddMenuEntry(system->objects[6]->name.c_str(), 6);
-	glutAddMenuEntry("Cancel", -1);
 
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	for (int i = 0; i < sizeof(system->objects) / sizeof(system->objects[0]); i++)
+	{
+		glutAddMenuEntry(system->objects[i]->name.c_str(), i);
+
+		if(i == sizeof(system->objects) / sizeof(system->objects[0]) - 1)
+			glutAddMenuEntry("Back", -1);
+	}
+	glutAddMenuEntry("Cancel", -2);
+
+	glutAttachMenu(GLUT_LEFT_BUTTON);
 }
 
 void HelloGL::InitObjects()
@@ -91,6 +87,23 @@ void HelloGL::InitObjects()
 	system = new OrbitSystem();
 
 	cameraFocus = system->objects[0];
+	cameraFocusInt = 0;
+
+	//Create background image - inside of object
+	Vector4* starEmission = new Vector4();
+	starEmission->x = 0.5f; starEmission->y = 0.5f; starEmission->z = 0.5f; starEmission->w = 0.0f;
+
+	background = new Object(
+		"Background",
+		(char*)"Objects/Background.obj",
+		nullptr,
+		new Rotation(0, 0, 0, 0, 0),
+		new Orbit(0, 0, 0),
+		-200,
+		starEmission
+	);
+
+	background->Load(background->fileName);
 }
 
 void HelloGL::InitLighting()
@@ -124,12 +137,25 @@ HelloGL::~HelloGL(void)
 	delete camera;
 }
 
+//Changes object that the camera is looking at from menu selection
 void HelloGL::ObjectSelect(int val)
 {
-	if (val == -1)
+	if (val == -2)
 		return;
+	else if (val == -1)
+	{
+		cameraFocus = system->objects[0];
+		cameraFocusInt = 0;
+		zoomOut = true;
+	}
+	else
+	{
+		cameraFocus = system->objects[val];
+		cameraFocusInt = val;
+		zoomOut = false;
+	}
 
-	cameraFocus = system->objects[val];
+	radius = maxDis;
 }
 
 
@@ -138,6 +164,7 @@ void HelloGL::Display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clears the scene
 
 	system->Draw();
+	background->Draw();
 
 	glFlush();
 	glutSwapBuffers();
@@ -145,6 +172,17 @@ void HelloGL::Display()
 
 void HelloGL::Update()
 {
+	if (zoomOut)
+	{
+		minDis = 20.0f;
+		maxDis = 150.0f;
+	}
+	else
+	{
+		minDis = 10.0f;
+		maxDis = 50.0f;
+	}
+
 	glLoadIdentity();
 	camera->center = cameraFocus->position;
 
@@ -168,6 +206,7 @@ void HelloGL::Update()
 	glLightfv(GL_LIGHT0, GL_SPECULAR, &(lightData->specular.x));
 	glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->x));
 
+	system->SetIsSpedUp(isKeyDown);
 	
 	system->Update();
 
@@ -178,15 +217,37 @@ void HelloGL::KeyboardDown(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
+		//Space key
 		case 32:
 			isKeyDown = true;
 			break;
-		case 'w':
-			radius = std::max(radius -= 0.2f, 10.0f);
+			//Go to previous object
+		case 'a':
+			if (cameraFocusInt == 0)
+			{
+				cameraFocus = system->objects[6];
+				cameraFocusInt = 6;
+			}
+			else
+			{
+				cameraFocusInt -= 1;
+				cameraFocus = system->objects[cameraFocusInt];
+			}
 			break;
-		case 's':
-			radius = std::min(radius += 0.2f, 30.0f);
+			//Go to next object
+		case 'd':
+			if (cameraFocusInt == 6)
+			{
+				cameraFocus = system->objects[0];
+				cameraFocusInt = 0;
+			}
+			else
+			{
+				cameraFocusInt += 1;
+				cameraFocus = system->objects[cameraFocusInt];
+			}
 			break;
+			//Escape
 		case 27:
 			glutDestroyWindow(glutGetWindow());
 			break;
@@ -198,6 +259,7 @@ void HelloGL::KeyboardUp(unsigned char key, int x, int y)
 	isKeyDown = false;
 }
 
+//Gets value of mouse position
 void HelloGL::MouseMovement(int x, int y)
 {
 	verticalAngle = (y - 800 / 2) * 0.01f;
@@ -209,10 +271,11 @@ void HelloGL::MouseMovement(int x, int y)
 	horizontalAngle = fmod(horizontalAngle, M_PI * 2.0f);
 }
 
+//Gets value of mouse wheel
 void HelloGL::MouseWheel(int wheel, int direction, int x, int y)
 {
 	if(direction > 0)
-		radius = std::max(radius -= 0.75f, 10.0f);
+		radius = std::max(radius -= 0.75f, minDis);
 	else
-		radius = std::min(radius += 0.75f, 30.0f);
+		radius = std::min(radius += 0.75f, maxDis);
 }

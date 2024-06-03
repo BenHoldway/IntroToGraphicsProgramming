@@ -33,7 +33,12 @@ public:
 
 	float verticalAngle;
 	float horizontalAngle;
+	
 	float radius;
+	float minDis;
+	float maxDis;
+
+	bool zoomOut;
 
 	float mouseAngle;
 
@@ -41,6 +46,9 @@ public:
 
 	OrbitSystem* system;
 	Object* cameraFocus;
+	int cameraFocusInt;
+
+	Object* background;
 
 	//constructor Definition
 	HelloGL(int argc, char* argv[]);

@@ -1,11 +1,12 @@
 #pragma once
 #include "Object.h"
 
-#define NUMOBJECTS 4
+#define NUMOBJECTS 7
 
 class OrbitSystem
 {
 private:
+	bool isSpedUp;
 public:
 	OrbitSystem();
 	~OrbitSystem();
@@ -13,4 +14,6 @@ public:
 	void Update();
 
 	Object* objects[NUMOBJECTS];
+
+	void SetIsSpedUp(bool value) { isSpedUp = value; }
 };

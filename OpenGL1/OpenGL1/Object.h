@@ -33,7 +33,9 @@ private:
 	std::vector<float*> normals;
 	std::vector<Face> faces;
 	std::vector<Material> materials;
-	GLuint list = 0;
+
+	std::vector<unsigned int> lists;
+	int list = 0;
 
 	bool hasNormals;
 	bool hasTexture;
@@ -47,17 +49,19 @@ private:
 	GLfloat scale;
 	Vector4* emission;
 
+
 public:
-	Object(std::string _name, const char* fileName, Object* _parent, Rotation* _rotation, Orbit* _orbit, GLfloat _scale, Vector4* _emission);
+	Object(std::string _name, const char* _fileName, Object* _parent, Rotation* _rotation, Orbit* _orbit, GLfloat _scale, Vector4* _emission);
 	~Object();
 	void Load(const char* fileName);
 	unsigned int LoadTexture(const char* fileName);
 	void Draw();
-	void Update();
-	void OrbitPosition();
+	void Update(bool isSpedUp);
+	void OrbitPosition(bool isSpedUp);
 	void OrbitPath(GLint numberOfSides);
 	
 	std::string name;
 	Vector3 position;
+	const char* fileName;
 };
 

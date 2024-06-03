@@ -5,7 +5,6 @@ OrbitSystem::OrbitSystem()
 	Vector4* starEmission = new Vector4();
 	starEmission->x = 0.5f; starEmission->y = 0.5f; starEmission->z = 0.5f; starEmission->w = 0.0f;
 
-	//Star
 	objects[0] = new Object(
 		"Urexia 5b",
 		(char*)"Objects/Urexia-5b.obj", //Object File
@@ -16,7 +15,6 @@ OrbitSystem::OrbitSystem()
 		starEmission
 	);
 
-	//Planet 1
 	objects[1] = new Object(
 		"Naheme",
 		(char*)"Objects/Naheme.obj",
@@ -27,7 +25,6 @@ OrbitSystem::OrbitSystem()
 		nullptr
 	);
 
-	//Planet 2
 	objects[2] = new Object(
 		"Churater",
 		(char*)"Objects/Churater.obj",
@@ -48,35 +45,43 @@ OrbitSystem::OrbitSystem()
 		nullptr
 	);
 
-	//objects[4] = new Object(
-	//	"Oclepe",
-	//	(char*)"Objects/Oclepe.obj",
-	//	objects[0],
-	//	new Rotation(0.2f, 0.8f, 0.2f, 0.3f, 0.18f),
-	//	new Orbit(0.0004, 80.0f, 0),
-	//	1.6,
-	//	nullptr
-	//);
+	objects[4] = new Object(
+		"Oclepe",
+		(char*)"Objects/Oclepe.obj",
+		objects[0],
+		new Rotation(0.2f, 0.8f, 0.2f, 0.3f, 0.18f),
+		new Orbit(0.0004, 80.0f, 0),
+		1.6,
+		nullptr
+	);
 
-	//objects[5] = new Object(
-	//	"Gerutha",
-	//	(char*)"Objects/Gerutha.obj",
-	//	objects[0],
-	//	new Rotation(0.2f, 0.8f, 0.2f, 0.3f, 0.18f),
-	//	new Orbit(0.0003, 100.0f, 0),
-	//	1.6,
-	//	nullptr
-	//);
+	objects[5] = new Object(
+		"Gerutha",
+		(char*)"Objects/Gerutha.obj",
+		objects[0],
+		new Rotation(0.2f, 0.8f, 0.2f, 0.3f, 0.18f),
+		new Orbit(0.0003, 100.0f, 0),
+		1.6,
+		nullptr
+	);
 
-	//objects[6] = new Object(
-	//	"Pheromos 9",
-	//	(char*)"Objects/Pheromos-9.obj",
-	//	objects[0],
-	//	new Rotation(0.2f, 0.8f, 0.2f, 0.3f, 0.18f),
-	//	new Orbit(0.0008, 130.0f, 0),
-	//	1.6,
-	//	nullptr
-	//);
+	objects[6] = new Object(
+		"Pheromos 9",
+		(char*)"Objects/Pheromos-9.obj",
+		objects[0],
+		new Rotation(0.2f, 0.8f, 0.2f, 0.3f, 0.18f),
+		new Orbit(0.0008, 130.0f, 0),
+		1.6,
+		nullptr
+	);
+
+	for (Object* object : objects)
+	{
+		if (object == nullptr)
+			break;
+
+		object->Load(object->fileName);
+	}
 }
 
 OrbitSystem::~OrbitSystem()
@@ -101,6 +106,6 @@ void OrbitSystem::Update()
 		if (object == nullptr)
 			break;
 
-		object->Update();
+		object->Update(isSpedUp);
 	}
 }
