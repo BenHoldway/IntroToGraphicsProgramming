@@ -87,6 +87,7 @@ void Cube::Update()
 void Cube::InitMat()
 {
     material = new Material();
+    material->name = "CubeMat";
     material->ambient.x = 0.0f; material->ambient.y = 0.0f; material->ambient.z = 0.0f; material->ambient.w = 0.0f;
     material->diffuse.x = 0.8f; material->diffuse.y = 0.8f; material->diffuse.z = 0.8f; material->diffuse.w = 1.0f;
     material->specular.x = 1.0f; material->specular.y = 1.0f; material->specular.z = 1.0f; material->specular.w = 1.0f;

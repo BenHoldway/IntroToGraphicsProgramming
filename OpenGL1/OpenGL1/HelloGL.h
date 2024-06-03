@@ -11,6 +11,8 @@
 #include "Cube.h"
 #include "Pyramid.h"
 #include "MeshLoader.h"
+#include "OrbitSystem.h"
+#include "Object.h"
 
 #define REFRESHRATE 16
 #define NUMOBJECTS 3
@@ -37,9 +39,8 @@ public:
 
 	Camera* camera;
 
-	SceneObject* objects[NUMOBJECTS];
-	SceneObject* cameraFocus;
-
+	OrbitSystem* system;
+	Object* cameraFocus;
 
 	//constructor Definition
 	HelloGL(int argc, char* argv[]);
@@ -57,12 +58,9 @@ public:
 	void Display();
 	void Update();
 
-
-	float UpdateRotation(float _rotationSpeed, float increaseAmount);
-
 	void KeyboardDown(unsigned char key, int x, int y);
 	void KeyboardUp(unsigned char key, int x, int y);
 	void MouseMovement(int x, int y);
-
+	void MouseWheel(int wheel, int direction, int x, int y);
 };
 

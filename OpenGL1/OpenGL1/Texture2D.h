@@ -18,6 +18,7 @@ public:
 	~Texture2D();
 
 	bool Load(char* path, int _width, int _height);
+	bool BMPLoad(char* path);
 
 	GLuint GetID() const { return ID; }
 	int GetWidth() const { return width; }

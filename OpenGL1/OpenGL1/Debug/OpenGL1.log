@@ -1,2 +1,28 @@
-﻿  Texture2D.cpp
+﻿  GLUCallbacks.cpp
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.h(18,1): warning C4005: 'NUMOBJECTS': macro redefinition
+  (compiling source file 'GLUCallbacks.cpp')
+  F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.h(4,1):
+  see previous definition of 'NUMOBJECTS'
+  
+  HelloGL.cpp
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.h(18,1): warning C4005: 'NUMOBJECTS': macro redefinition
+  (compiling source file 'HelloGL.cpp')
+  F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.h(4,1):
+  see previous definition of 'NUMOBJECTS'
+  
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(206,26): warning C4305: 'initializing': truncation from 'double' to 'float'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(209,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  OrbitSystem.cpp
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(26,3): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(36,13): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(37,3): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(46,13): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(47,3): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+  main.cpp
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.h(18,1): warning C4005: 'NUMOBJECTS': macro redefinition
+  (compiling source file 'main.cpp')
+  F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.h(4,1):
+  see previous definition of 'NUMOBJECTS'
+  
+  Generating Code...
   OpenGL1.vcxproj -> F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe

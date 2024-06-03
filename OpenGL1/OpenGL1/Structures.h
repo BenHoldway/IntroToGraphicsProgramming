@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <gl/GL.h>
+#include <string>
 
 struct Vector3
 {
@@ -39,6 +40,8 @@ struct Mesh
 	int vertexCount, normalCount, indexCount, texCoordsCount;
 
 	TexCoord* texCoords;
+
+	int size;
 };
 
 struct Vector4
@@ -55,10 +58,41 @@ struct Lighting
 
 struct Material
 {
+	std::string name;
 	Vector4 ambient;
 	Vector4 diffuse;
 	Vector4 specular;
 	Vector4 emissive;
 
 	GLfloat shininess;
+
+	int texture;
+};
+
+struct Rotation
+{
+	float rotX, rotY, rotZ, rotation, increment;
+
+	Rotation(float _x, float _y, float _z, float _rotation, float _increment)
+	{
+		rotX = _x;
+		rotY = _y;
+		rotZ = _z;
+		rotation = _rotation;
+		increment = _increment;
+	}
+};
+
+struct Orbit
+{
+	GLfloat speed;
+	GLfloat radius;
+	GLfloat horizontalAngle;
+
+	Orbit(GLfloat _speed, GLfloat _radius, GLfloat _angle)
+	{
+		speed = _speed;
+		radius = _radius;
+		horizontalAngle = _angle;
+	}
 };

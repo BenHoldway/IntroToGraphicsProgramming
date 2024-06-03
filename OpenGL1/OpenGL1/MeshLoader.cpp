@@ -25,6 +25,10 @@ namespace MeshLoader
 				inFile >> mesh.vertices[i].x;
 				inFile >> mesh.vertices[i].y;
 				inFile >> mesh.vertices[i].z;
+
+				mesh.vertices[i].x *= mesh.size;
+				mesh.vertices[i].y *= mesh.size;
+				mesh.vertices[i].z *= mesh.size;
 			}
 		}
 	}
@@ -73,9 +77,11 @@ namespace MeshLoader
 		}
 	}
 
-	Mesh* MeshLoader::Load(char* path, bool loadTex)
+	Mesh* MeshLoader::Load(char* path, bool loadTex, int size)
 	{
 		Mesh* mesh = new Mesh();
+
+		mesh->size = size;
 
 		ifstream inFile;
 

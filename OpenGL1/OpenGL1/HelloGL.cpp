@@ -18,9 +18,10 @@ HelloGL::HelloGL(int argc, char* argv[])
 	GLUTCallbacks::Init(this);
 
 	InitGL(argc, argv);
-	InitMenu();
 	InitObjects();
 	InitLighting();
+	
+	InitMenu();
 
 	glutMainLoop();
 }
@@ -29,21 +30,24 @@ void HelloGL::InitGL(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
-	glutInitWindowSize(800, 800);
+	glutInitWindowSize(1920, 1080);
 	glutCreateWindow("Simple OpenGL Program");
 
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutKeyboardFunc(GLUTCallbacks::KeyboardDown);
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
 	glutPassiveMotionFunc(GLUTCallbacks::MouseMovement);
+	glutMouseWheelFunc(GLUTCallbacks::MouseWheel);
 
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
 
 	//Allows access to modify camera's perspective and aspect ratio etc
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glViewport(0, 0, 800, 800);
-	gluPerspective(45, 1, 1, 1000);
+	glViewport(0, 0, 1920, 1080);
+	gluPerspective(45, 1920/1080, 1, 1000);
+
+	glutFullScreen();
 
 	//Allows access to transform, rotate, scale etc different objects
 	glMatrixMode(GL_MODELVIEW);
@@ -57,26 +61,24 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 	glCullFace(GL_BACK);
 
-	glutSetCursor(GLUT_CURSOR_NONE);
+	//glutSetCursor(GLUT_CURSOR_NONE);
+
+	//glutReshapeWindow(1920, 1080);
 }
 
 void HelloGL::InitMenu()
 {
 	glutCreateMenu(GLUTCallbacks::CreateMenu);
-	glutAddMenuEntry("Star", 0);
-	glutAddMenuEntry("Planet 1", 1);
-	glutAddMenuEntry("Planet 2", 2);
+	glutAddMenuEntry(system->objects[0]->name.c_str(), 0);
+	glutAddMenuEntry(system->objects[1]->name.c_str(), 1);
+	glutAddMenuEntry(system->objects[2]->name.c_str(), 2);
+	glutAddMenuEntry(system->objects[3]->name.c_str(), 3);
+	//glutAddMenuEntry(system->objects[4]->name.c_str(), 4);
+	//glutAddMenuEntry(system->objects[5]->name.c_str(), 5);
+	//glutAddMenuEntry(system->objects[6]->name.c_str(), 6);
 	glutAddMenuEntry("Cancel", -1);
 
-	glutAttachMenu(GLUT_LEFT_BUTTON);
-}
-
-void HelloGL::ObjectSelect(int val)
-{
-	if (val == -1)
-		return;
-
-	cameraFocus = objects[val];
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 void HelloGL::InitObjects()
@@ -86,28 +88,17 @@ void HelloGL::InitObjects()
 	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
 	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
 
-	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", true);
-	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", false);
+	system = new OrbitSystem();
 
-	Texture2D* texture = new Texture2D();
-	texture->Load((char*)"Penguins.raw", 512, 512);
-
-	Texture2D* textureStars = new Texture2D();
-	textureStars->Load((char*)"stars.raw", 512, 512);
-
-	/*Parent/ Star*/ objects[0] = new Cube(cubeMesh, textureStars, nullptr, 0, 0, -10.0f, 0, 5.0f, 2.5f, 5.0f, 0.5f, 0.0f, 0.0f, true);
-	/*Orbiter/ Planet 1*/ objects[1] = new Cube(cubeMesh, texture, objects[0], 0, 0, 0, 0.0f, 0.2f, 0.0f, 0.5f, 0.25f, 20.0f, 0.003f, false);
-	/*Orbiter/ Planet 2*/ objects[2] = new Cube(cubeMesh, texture, objects[0], 0, 0, 0, 0.0f, 0.2f, 0.2f, 0.5f, 0.25f, 50.0f, 0.0005f, false);
-
-	cameraFocus = objects[0];
+	cameraFocus = system->objects[0];
 }
 
 void HelloGL::InitLighting()
 {
 	lightPos = new Vector4();
-	lightPos->x = objects[0]->position.x;
-	lightPos->y = objects[0]->position.y;
-	lightPos->z = objects[0]->position.z;
+	lightPos->x = system->objects[0]->position.x;
+	lightPos->y = system->objects[0]->position.y;
+	lightPos->z = system->objects[0]->position.z;
 	lightPos->w = 1.0f;
 
 
@@ -115,7 +106,7 @@ void HelloGL::InitLighting()
 	lightData->ambient.x = 0.0f; 
 	lightData->ambient.y = 0.0f; 
 	lightData->ambient.z = 0.0f; 
-	lightData->ambient.w = 0.0f; 
+	lightData->ambient.w = 1.0f; 
 
 	lightData->diffuse.x = 0.8f;
 	lightData->diffuse.y = 0.8f;
@@ -133,14 +124,20 @@ HelloGL::~HelloGL(void)
 	delete camera;
 }
 
+void HelloGL::ObjectSelect(int val)
+{
+	if (val == -1)
+		return;
+
+	cameraFocus = system->objects[val];
+}
 
 
 void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clears the scene
 
-	for(int i = 0; i < NUMOBJECTS; i++)
-		objects[i]->Draw();
+	system->Draw();
 
 	glFlush();
 	glutSwapBuffers();
@@ -172,51 +169,28 @@ void HelloGL::Update()
 	glLightfv(GL_LIGHT0, GL_POSITION, &(lightPos->x));
 
 	
-	for (int i = 0; i < NUMOBJECTS; i++)
-		objects[i]->Update();
+	system->Update();
 
 	glutPostRedisplay();
-
-	//rotationSpeed1 = UpdateRotation(rotationSpeed1, 4.0f);
-	//rotationSpeed2 = UpdateRotation(rotationSpeed2, 1.5f);
-	//rotationSpeed3 = UpdateRotation(rotationSpeed3, 7.5f);
-}
-
-float HelloGL::UpdateRotation(float _rotationSpeed, float increaseAmount)
-{
-	if (isKeyDown)
-		increaseAmount *= 2;
-
-	_rotationSpeed += increaseAmount;
-
-	if (_rotationSpeed >= 360.0f)
-		_rotationSpeed = 0.0f;
-
-	return _rotationSpeed;
 }
 
 void HelloGL::KeyboardDown(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-	case 32:
-		isKeyDown = true;
-		break;
-	case 'd':
-		camera->eye.x += 0.01f; camera->center.x += 0.01f;
-		break;
-	case 'a':
-		camera->eye.x -= 0.01f; camera->center.x -= 0.01f;
-		break;
-	case 'w':
-		radius = std::max(radius -= 0.2f, 10.0f);
-		break;
-	case 's':
-		radius = std::min(radius += 0.2f, 30.0f);
-		break;
+		case 32:
+			isKeyDown = true;
+			break;
+		case 'w':
+			radius = std::max(radius -= 0.2f, 10.0f);
+			break;
+		case 's':
+			radius = std::min(radius += 0.2f, 30.0f);
+			break;
+		case 27:
+			glutDestroyWindow(glutGetWindow());
+			break;
 	}
-
-	std::cout << radius << std::endl;
 }
 
 void HelloGL::KeyboardUp(unsigned char key, int x, int y)
@@ -229,10 +203,16 @@ void HelloGL::MouseMovement(int x, int y)
 	verticalAngle = (y - 800 / 2) * 0.01f;
 	horizontalAngle = (x - 800 / 2) * 0.01f;
 
-	//mouseAngle = 90 + atan2f(camera->eye.y - verticalAngle, camera->eye.x - horizontalAngle) * 180 / M_PI;
-
 	float max_verticalAngle = 85 * M_PI / 180;
 
 	verticalAngle = std::max(std::min(verticalAngle, max_verticalAngle), -max_verticalAngle);
 	horizontalAngle = fmod(horizontalAngle, M_PI * 2.0f);
+}
+
+void HelloGL::MouseWheel(int wheel, int direction, int x, int y)
+{
+	if(direction > 0)
+		radius = std::max(radius -= 0.75f, 10.0f);
+	else
+		radius = std::min(radius += 0.75f, 30.0f);
 }

@@ -43,6 +43,11 @@ namespace GLUTCallbacks
 		helloGL->MouseMovement(x, y);
 	}
 
+	void MouseWheel(int wheel, int direction, int x, int y)
+	{
+		helloGL->MouseWheel(wheel, direction, x, y);
+	}
+
 	void CreateMenu(int val)
 	{
 		helloGL->ObjectSelect(val);
