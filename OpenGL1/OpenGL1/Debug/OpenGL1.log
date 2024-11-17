@@ -1,9 +1,22 @@
-﻿  HelloGL.cpp
-F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.h(18,1): warning C4005: 'NUMOBJECTS': macro redefinition
-  (compiling source file 'HelloGL.cpp')
-  F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.h(4,1):
-  see previous definition of 'NUMOBJECTS'
-  
-F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(266,26): warning C4305: 'initializing': truncation from 'double' to 'float'
-F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\HelloGL.cpp(269,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+﻿  Object.cpp
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Object.cpp(105,22): warning C4018: '<': signed/unsigned mismatch
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Object.cpp(364,32): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Object.cpp(366,32): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Object.cpp(377,16): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+  OrbitSystem.cpp
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(24,3): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(33,13): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(34,3): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(43,13): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(44,3): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(53,13): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(54,3): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(63,13): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(64,3): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(73,13): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\OrbitSystem.cpp(74,3): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+  Texture2D.cpp
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Texture2D.cpp(101,23): warning C4018: '<': signed/unsigned mismatch
+F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\OpenGL1\Texture2D.cpp(62,9): warning C4101: 'fileSize': unreferenced local variable
+  Generating Code...
   OpenGL1.vcxproj -> F:\University Work\Year1\6. Introduction to Graphics Programming\IntroToGraphicsProgramming\OpenGL1\Debug\OpenGL1.exe

@@ -337,8 +337,8 @@ void Object::Draw()
 	}
 	glPopMatrix();
 
-	if (parent != nullptr)
-		OrbitPath(500);
+	//if (parent != nullptr)
+		//OrbitPath(500);
 }
 
 void Object::Update(bool isSpedUp)
